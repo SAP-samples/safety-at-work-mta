@@ -1,0 +1,10 @@
+VIEW "demo.sap.presales.covid19.model::covid19.V_ROOMSOCCUPATION"
+AS 
+SELECT  
+	"DeviceID",
+	"Type",
+	"Capacity",
+	round(rand()*150,0) as "Measured"
+	 
+from "demo.sap.presales.covid19.model::covid19.Device" as "D"
+where "Type" = 'BEACON';

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="demo.sap.presales.covid19.cv::CV_AGGREGATE_DEVICE_EVENTS" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="CV_AGGREGATE_DEVICE_EVENTS"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="demo.sap.presales.covid19.model::covid19.Event">
+    <resourceUri>demo.sap.presales.covid19.model::covid19.Event</resourceUri>
+  </DataSource>
+  <DataSource id="demo.sap.presales.covid19.model::covid19.EphemeralID">
+    <resourceUri>demo.sap.presales.covid19.model::covid19.EphemeralID</resourceUri>
+  </DataSource>
+  <DataSource id="demo.sap.presales.covid19.cv::GetMainRequests" type="TABLE_FUNCTION">
+    <resourceUri>demo.sap.presales.covid19.cv::GetMainRequests</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:JoinView" id="EphToEvents" cardinality="C1_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="Distance" aggregationType="sum"/>
+      <viewAttribute id="CreatedAt" aggregationType="min"/>
+      <viewAttribute id="DeviceID"/>
+      <viewAttribute id="Type"/>
+      <viewAttribute id="Description"/>
+      <viewAttribute id="OwnedBy"/>
+      <viewAttribute id="Capacity" aggregationType="sum"/>
+      <viewAttribute id="TagsString"/>
+      <viewAttribute hidden="true" id="JOIN$EphemeralID$TargetIED"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="Counter" datatype="INTEGER" expressionLanguage="SQL">
+        <formula>1</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="DevToEph">
+      <mapping xsi:type="Calculation:AttributeMapping" target="DeviceID" source="DeviceID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="Type" source="Type"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="Description" source="Description"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="OwnedBy" source="OwnedBy"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="Capacity" source="Capacity"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TagsString" source="TagsString"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$EphemeralID$TargetIED" source="EphemeralID"/>
+    </input>
+    <input node="demo.sap.presales.covid19.model::covid19.Event">
+      <mapping xsi:type="Calculation:AttributeMapping" target="Distance" source="Distance"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CreatedAt" source="CreatedAt"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$EphemeralID$TargetIED" source="TargetIED"/>
+    </input>
+    <joinAttribute name="JOIN$EphemeralID$TargetIED"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="DevToEph" cardinality="CN_1" joinType="inner" filterExpressionLanguage="SQL">
+    <viewAttributes>
+      <viewAttribute id="EphemeralID"/>
+    
+      <viewAttribute id="DeviceID"/>
+      <viewAttribute id="Type"/>
+      <viewAttribute id="Description"/>
+      <viewAttribute id="OwnedBy"/>
+      <viewAttribute id="Capacity" aggregationType="sum"/>
+      <viewAttribute id="TagsString"/>
+      <viewAttribute hidden="true" id="JOIN$DeviceID$DeviceID"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="demo.sap.presales.covid19.model::covid19.EphemeralID">
+      <mapping xsi:type="Calculation:AttributeMapping" target="EphemeralID" source="EID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DeviceID$DeviceID" source="DeviceID"/>
+    </input>
+    <input node="demo.sap.presales.covid19.cv::GetMainRequests">
+      <mapping xsi:type="Calculation:AttributeMapping" target="DeviceID" source="DeviceID"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="Type" source="Type"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="Description" source="Description"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="OwnedBy" source="OwnedBy"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="Capacity" source="Capacity"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="TagsString" source="TagsString"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$DeviceID$DeviceID" source="DeviceID"/>
+    </input>
+    <filter>&quot;Type&quot;='BEACON'</filter>
+    <joinAttribute name="JOIN$DeviceID$DeviceID"/>
+  </calculationView>
+</calculationViews>
+<logicalModel id="EphToEvents">
+  <attributes>
+    <attribute id="Distance" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Distance"/>
+      <keyMapping columnObjectName="EphToEvents" columnName="Distance"/>
+    </attribute>
+    <attribute id="CreatedAt" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CreatedAt"/>
+      <keyMapping columnObjectName="EphToEvents" columnName="CreatedAt"/>
+    </attribute>
+  
+    <attribute id="DeviceID" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DeviceID"/>
+      <keyMapping columnObjectName="EphToEvents" columnName="DeviceID"/>
+    </attribute>
+    <attribute id="Type" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Type"/>
+      <keyMapping columnObjectName="EphToEvents" columnName="Type"/>
+    </attribute>
+    <attribute id="Description" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Description"/>
+      <keyMapping columnObjectName="EphToEvents" columnName="Description"/>
+    </attribute>
+    <attribute id="OwnedBy" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="OwnedBy"/>
+      <keyMapping columnObjectName="EphToEvents" columnName="OwnedBy"/>
+    </attribute>
+    <attribute id="Capacity" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Capacity"/>
+      <keyMapping columnObjectName="EphToEvents" columnName="Capacity"/>
+    </attribute>
+    <attribute id="TagsString" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="TagsString"/>
+      <keyMapping columnObjectName="EphToEvents" columnName="TagsString"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="Counter" order="1" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="Counter"/>
+      <measureMapping columnObjectName="EphToEvents" columnName="Counter"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="92" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="EphToEvents" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="DevToEph" modelObjectNameSpace="EphToEvents" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="250"/>
+    </shape>
+    <shape modelObjectName="demo.sap.presales.covid19.model::covid19.Event" modelObjectNameSpace="EphToEvents" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="347"/>
+    </shape>
+    <shape expanded="true" modelObjectName="DevToEph" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="357"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="demo.sap.presales.covid19.model::covid19.EphemeralID" modelObjectNameSpace="DevToEph" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="425" y="30"/>
+      <rectangleSize width="388"/>
+    </shape>
+  
+    <shape modelObjectName="demo.sap.presales.covid19.cv::GetMainRequests" modelObjectNameSpace="DevToEph" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="-10" y="240"/>
+      <rectangleSize width="346.10546875"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

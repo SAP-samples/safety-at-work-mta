@@ -1,0 +1,56 @@
+<core:FragmentDefinition 
+	xmlns="sap.m" 
+	xmlns:l="sap.ui.layout" 
+	xmlns:core="sap.ui.core"
+    
+    xmlns:viz="sap.viz.ui5.controls" 
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:viz.data="sap.viz.ui5.data" 
+    height="100%">
+    
+    <IconTabFilter 
+        key="historyDataHeatmap"
+        text="{i18n>historyDataHeatmap}">
+
+        <viz:Popover id="heatmapPopOver"></viz:Popover>
+        <viz:VizFrame 
+            id="heatmapChart" 
+            uiConfig="{applicationSet:'fiori'}"
+            height='700px' 
+            width="100%" 
+            vizType='heatmap'>
+            <viz:dataset>
+                <viz.data:FlattenedDataset>
+                    <viz.data:dimensions>
+                        <viz.data:DimensionDefinition 
+                            name="Device"
+                            value="{odata>Description}" />
+                        <viz.data:DimensionDefinition 
+                            name="Timeframe"
+                            value="{path: 'odata>TimeFrame', formatter: '.formatter.getLocalTimeFrame'}" />
+                    </viz.data:dimensions>
+                    <viz.data:measures>
+                        <viz.data:MeasureDefinition 
+                            name="Avg"
+                            value="{parts:[{path:'odata>Avg'},{path:'odata>Capacity'}], formatter: '.formatter.getCapacityPercentage'}" />
+                    </viz.data:measures>
+                </viz.data:FlattenedDataset>
+            </viz:dataset>
+
+            <viz:feeds>
+                <viz.feeds:FeedItem 
+                    uid="color" 
+                    type="Measure"
+                    values="Avg" />
+                <viz.feeds:FeedItem 
+                    uid="categoryAxis" 
+                    type="Dimension"
+                    values="Timeframe" />    
+                <viz.feeds:FeedItem 
+                    uid="categoryAxis2" 
+                    type="Dimension"
+                    values="Device" />
+            </viz:feeds>
+        </viz:VizFrame>
+    </IconTabFilter>
+</core:FragmentDefinition>

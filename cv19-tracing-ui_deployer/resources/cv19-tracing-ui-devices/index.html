@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html style="height: 100%;">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta charset="utf-8">
+		<meta name = "viewport" content="width=device-width, minimum-scale=1.0, maximum-scale = 1.0, user-scalable = no">
+		<title>Presales Engagement Requests Management</title>
+		<script
+				id="sap-ui-bootstrap"
+				src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js"
+				data-sap-ui-theme="sap_fiori_3"
+				data-sap-ui-libs="sap.m"
+				data-sap-ui-bindingSyntax="complex"
+				data-sap-ui-compatVersion="edge"
+				data-sap-ui-async="true"
+				data-sap-ui-resourceroots='{
+					"covid19.ui.devicesmanagement.cv19-tracing-ui-devices": "./"
+				}'>
+		</script>
+
+		<script>
+			sap.ui.getCore().attachInit(function () {
+				sap.ui.require([
+					"sap/ui/core/ComponentContainer"
+				], function (ComponentContainer) {
+
+					new ComponentContainer({
+						name : 'covid19.ui.devicesmanagement.cv19-tracing-ui-devices',
+						height : "100%",
+						settings : {
+							id : "covid19.ui.devicesmanagement.cv19-tracing-ui-devices"
+						}
+					}).placeAt('content');
+				});
+			});
+		</script>
+
+	</head>
+	<body class="sapUiBody sapUiSizeCompact" id="content">
+	</body>
+</html>

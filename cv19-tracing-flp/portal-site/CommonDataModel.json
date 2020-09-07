@@ -1,0 +1,89 @@
+{
+	"_version": "3.0.0",
+	"identification": {
+		"id": "68ae76a1-7efd-4dab-8ce0-fc02fc16a5e1-1591966110381",
+		"entityType": "bundle"
+	},
+	"payload": {
+		"catalogs": [{
+			"_version": "3.0.0",
+			"identification": {
+				"id": "defaultCatalogId",
+				"title": "{{title}}",
+				"entityType": "catalog",
+				"i18n": "i18n/defaultCatalogId.properties"
+			},
+			"payload": {
+				"viz": []
+			}
+		}],
+		"groups": [{
+			"_version": "3.0.0",
+			"identification": {
+				"id": "defaultGroupId",
+				"title": "{{title}}",
+				"entityType": "group",
+				"i18n": "i18n/defaultGroupId.properties"
+			},
+			"payload": {
+				"viz": [{
+					"id": "covid19.ui.devicesmanagement.cv19-tracing-ui-devices-0-1591966155309",
+					"appId": "covid19.ui.devicesmanagement.cv19-tracing-ui-devices",
+					"vizId": "ManageDevices-display"
+				}, {
+					"id": "covid19.ui.infected.cv19-tracing-ui-infected-1-1591966155309",
+					"appId": "covid19.ui.infected.cv19-tracing-ui-infected",
+					"vizId": "ManageInfected-display"
+				}]
+			}
+		}, {
+			"_version": "3.0.0",
+			"identification": {
+				"id": "monitor",
+				"title": "{{title}}",
+				"entityType": "group",
+				"i18n": "i18n/monitor.properties"
+			},
+			"payload": {
+				"viz": [{
+					"id": "covid19.ui.dashboard.cv19-tracing-ui-dashboard-0-1591966155309",
+					"appId": "covid19.ui.dashboard.cv19-tracing-ui-dashboard",
+					"vizId": "DeviceDashboard-display"
+				}]
+			}
+		}],
+		"sites": [{
+			"_version": "3.0.0",
+			"identification": {
+				"id": "e80295fa-22e3-4be2-88d0-27b6544f5a0a-1591966110381",
+				"entityType": "site",
+				"title": "SAP Fiori launchpad site on Cloud Foundry",
+				"description": "SAP Fiori launchpad site on Cloud Foundry, deployed from SAP Web IDE"
+			},
+			"payload": {
+				"config": {
+					"ushellConfig": {
+						"renderers": {
+							"fiori2": {
+								"componentData": {
+									"config": {
+										"applications": {
+											"Shell-home": {}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"groupsOrder": ["defaultGroupId", "monitor"],
+				"sap.cloud.portal": {
+					"config": {
+						"theme.id": "sap_fiori_3",
+						"theme.active": ["sap_fiori_3", "sap_fiori_3_dark", "sap_belize_hcb", "sap_belize_hcw"]
+					}
+				}
+			}
+		}]
+	}
+}

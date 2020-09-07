@@ -1,0 +1,26 @@
+{
+  "format_version": 1,
+  "imports": 
+   [
+	{
+     "import_settings" : {
+        "import_columns" : [ 
+           "Key","Type","Value"
+        ]
+     },
+     "source_data" : { 
+       "data_type" : "CSV", 
+       "file_name" : "demo.sap.presales.covid19.model.csv::Tags.csv", 
+       "has_header" : true,
+       "no_data_import": false,
+       "delete_existing_foreign_data": false,
+       "dialect"   : "HANA",  
+       "type_config" : { 
+          "delimiter" : "," 
+        } 
+      }, 
+     "target_table" : "demo.sap.presales.covid19.model::covid19.Tag"  
+    }
+    
+   ] 
+}

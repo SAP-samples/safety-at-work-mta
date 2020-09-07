@@ -1,0 +1,1 @@
+sap.ui.define(["./BaseController"],function(e){"use strict";return e.extend("covid19.ui.infected.cv19-tracing-ui-infected.controller.DetailObjectNotFound",{})});

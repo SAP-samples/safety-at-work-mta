@@ -1,0 +1,1 @@
+sap.ui.define(["sap/suite/ui/generic/template/lib/AppComponent"],function(e){return e.extend("covid19.ui.infected.cv19-tracing-ui-infected.Component",{metadata:{manifest:"json"}})});

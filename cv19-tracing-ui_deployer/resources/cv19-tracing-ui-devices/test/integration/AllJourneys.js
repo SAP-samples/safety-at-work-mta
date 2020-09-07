@@ -1,0 +1,1 @@
+sap.ui.define(["sap/ui/test/Opa5","./arrangements/Startup","./arrangements/FLP","./MasterJourney","./NavigationJourney","./NotFoundJourney","./BusyJourney","./FLPIntegrationJourney"],function(e,n,a){"use strict";e.extendConfig({arrangements:new n,assertions:new a,viewNamespace:"covid19.ui.devicesmanagement.cv19-tracing-ui-devices.view.",autoWait:true})});

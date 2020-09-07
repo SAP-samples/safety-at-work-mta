@@ -1,0 +1,219 @@
+<core:FragmentDefinition 
+	xmlns="sap.m" 
+	xmlns:l="sap.ui.layout" 
+	xmlns:core="sap.ui.core"
+    xmlns:micro="sap.suite.ui.microchart"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    
+    <IconTabFilter 
+        key="realTimeDevicesMonitor"
+        text="{i18n>realTimeDevicesMonitor}">
+        <Table
+            class="sapUiSizeCompact"
+            id="realTimeDeviceMonitorTable"
+            sticky="ColumnHeaders,HeaderToolbar"
+            inset="false"
+            growing="true"
+            growingScrollToLoad="true"
+            items="{
+                path: 'odata>/RealTimeRoomStatusParameters(TimeFrameInMinutes=5)/Results',
+                parameters:{
+                	select: 'TimeFrameInMinutes,DeviceID,Description,Capacity,Measured,MeasuredPercentage'
+                },
+                sorter: {
+                    path: 'DeviceID'
+                }
+            }">
+            <headerToolbar>
+                <Toolbar>
+                    <content>
+                        <Title
+                            class="notSoSmallTitle"
+                            text="{i18n>realTimeTableTitle}"
+                            titleStyle="H3"
+                            level="H3"/>
+                        <ToolbarSpacer />
+                        <MultiComboBox
+                            id="deviceStatusMultiCombobox"
+                            width="25%"
+                            placeholder="{i18n>deviceStatusMultiComboboxPlaceholder}"
+                            showSecondaryValues= "false"
+                            items="{
+                                path: '/DeviceStatuses',
+                                sorter: { 
+                                    path: 'position',
+                                    descending: false
+                                }
+                            }"
+                            selectionFinish="onRealTimeTableDeviceStatusesMCBChange">
+                            <core:ListItem 
+                                key="{key}" 
+                                text="{
+                                    path: 'value',
+                                    formatter: '.formatter.translateText'
+                                }"/>
+                        </MultiComboBox>
+                    </content>
+                </Toolbar>
+            </headerToolbar>
+            <infoToolbar>
+                <OverflowToolbar>
+                    <Label text="{i18n>realTimeMonitorDevicesInfoToolbarText}"/>
+                </OverflowToolbar>
+            </infoToolbar>
+            <columns>
+                <Column
+                    width="auto">
+                    <Button 
+                        class="sapUiSizeCompact" 
+                        iconFirst="false" 
+                        type="Transparent" 
+                        icon="sap-icon://sorting-ranking" 
+                        text="{i18n>deviceDescription}" 
+                        press="onTableColumnHeaderButtonPress">
+                        <customData>
+                            <core:CustomData 
+                                key="sorterProperty"
+                                value="Description"/>
+                            <core:CustomData 
+                                key="descending"
+                                value="false"/>
+                        </customData>
+                    </Button>
+                </Column>
+                <Column
+                    width="auto">
+                    <Text 
+                        text="{i18n>deviceGroup}" />
+                </Column>
+                <Column
+                    width="auto"
+                    minScreenWidth="Tablet"
+                    demandPopin="true"
+                    hAlign="Center">
+                    <Button 
+                        class="sapUiSizeCompact" 
+                        iconFirst="false" 
+                        type="Transparent" 
+                        icon="sap-icon://sorting-ranking" 
+                        text="{i18n>deviceCapacity}" 
+                        press="onTableColumnHeaderButtonPress">
+                        <customData>
+                            <core:CustomData 
+                                key="sorterProperty"
+                                value="Capacity"/>
+                            <core:CustomData 
+                                key="descending"
+                                value="false"/>
+                        </customData>
+                    </Button>
+                </Column>
+                <Column
+                    width="auto"
+                    minScreenWidth="Desktop"
+                    demandPopin="true"
+                    hAlign="Center">
+                    <Text text="{i18n>measuredEvents}" />
+                </Column>
+                <Column
+                    width="20rem"
+                    minScreenWidth="Desktop"
+                    demandPopin="true"
+                    hAlign="Center">
+                    <Button 
+                        class="sapUiSizeCompact" 
+                        iconFirst="false" 
+                        type="Transparent" 
+                        icon="sap-icon://sorting-ranking" 
+                        text="{i18n>deviceStatus}" 
+                        press="onTableColumnHeaderButtonPress">
+                        <customData>
+                            <core:CustomData 
+                                key="sorterProperty"
+                                value="MeasuredPercentage"/>
+                            <core:CustomData 
+                                key="descending"
+                                value="false"/>
+                        </customData>
+                    </Button>
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem
+                    class="sapUiResponsiveContentPadding">
+                    <cells>
+
+                        <!-- Device's place/location name -->
+                        <ObjectIdentifier
+                            title="{odata>Description}"
+                            text="{odata>DeviceID}"/>
+
+                        <!-- Device's group name (location cluster) -->
+                        <HBox
+                            class="sapUiSizeCompact"
+                            wrap="Wrap"
+                            items="{
+                                path: 'odata>toTags',
+                                sorter: {
+                                    path: 'Type'
+                                }
+                            }">
+                            <Token
+                                class="sapUiTinyMarginBegin"
+                                key="{odata>Key}"
+                                text="{odata>Value}"
+                                editable="false"/>
+                        </HBox>
+                        <!-- Device's place/location maximum capacity -->
+                        <ObjectNumber
+                            number="{odata>Capacity}"
+                            unit="{i18n>people}"/>
+
+                        <!-- Device's place/location maximum capacity -->
+                        <ObjectNumber
+                            number="{odata>Measured}"
+                            unit="{i18n>people}"/>
+
+                        <!-- Device's current number of Events compared with total capacity -->
+                        <micro:BulletMicroChart 
+                            height="70px" 
+                            width="100%" 
+                            scale="%" 
+                            targetValue="100" 
+                            minValue="150"
+                            maxValue="0"
+                            app:name="bullet" 
+                            showTargetValue="false"
+                            size="Responsive">
+                            <micro:actual>
+                                <micro:BulletMicroChartData 
+                                    value="{odata>MeasuredPercentage}" 
+                                    color="{
+                                        parts: [
+                                            {path: 'odata>MeasuredPercentage'}
+                                        ],
+                                        formatter: '.formatter.realTimeDeviceSituationColor'
+                                    }" />
+                            </micro:actual>
+                            <micro:thresholds>
+                                <micro:BulletMicroChartData 
+                                    value="0" 
+                                    color="Neutral" />
+                                <micro:BulletMicroChartData 
+                                    value="50" 
+                                    color="Neutral" />
+                                <micro:BulletMicroChartData 
+                                    value="125" 
+                                    color="Critical" />
+                                <micro:BulletMicroChartData 
+                                    value="150" 
+                                    color="Error" />
+                            </micro:thresholds>
+                        </micro:BulletMicroChart>
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </IconTabFilter>
+
+</core:FragmentDefinition>

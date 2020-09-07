@@ -1,0 +1,9 @@
+COLUMN TABLE "demo.sap.presales.covid19.model::covid19.EphemeralID"(
+	"EID" NVARCHAR(50) NOT NULL,
+	"DeviceID" NVARCHAR(100) NOT NULL,
+	"CreatedAt" LONGDATE NOT NULL,
+	PRIMARY KEY (
+		"EID"
+	)
+)
+UNLOAD PRIORITY 5 AUTO MERGE;

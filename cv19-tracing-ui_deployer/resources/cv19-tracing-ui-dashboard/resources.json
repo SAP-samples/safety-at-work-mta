@@ -1,0 +1,90 @@
+{
+    "resources": [
+        {
+            "name": "Component-preload.js",
+            "merged": true
+        },
+        {
+            "name": "manifest.json"
+        },
+        {
+            "name": "model/init_data.json"
+        },
+        {
+            "name": "util/formatter.js"
+        },
+        {
+            "name": "util/chartsData.js"
+        },
+        {
+            "name": "model/models.js"
+        },
+        {
+            "name": "controller/Main.controller.js"
+        },
+        {
+            "name": "controller/BaseController.js"
+        },
+        {
+            "name": "Component.js"
+        },
+        {
+            "name": "manifest-bundle.zip"
+        },
+        {
+            "name": "i18n/i18n.properties",
+            "raw": "i18n/i18n.properties"
+        },
+        {
+            "name": "util/formatter-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "util/chartsData-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "model/models-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "controller/Main-dbg.controller.js",
+            "isDebug": true
+        },
+        {
+            "name": "controller/BaseController-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "Component-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "../../../../sap-ui-version.json"
+        },
+        {
+            "name": "view/fragment/Main/F02_HistoryDataHeatmapTab.fragment.xml"
+        },
+        {
+            "name": "view/fragment/Main/F01_RealTimeDevicesSituationTab.fragment.xml"
+        },
+        {
+            "name": "view/fragment/Main/F00_DynamicPageHeaderFilterBar.fragment.xml"
+        },
+        {
+            "name": "view/Main.view.xml"
+        },
+        {
+            "name": "view/App.view.xml"
+        },
+        {
+            "name": "css/style.css"
+        },
+        {
+            "name": "index.html"
+        },
+        {
+            "name": "extended_runnable_file.html"
+        }
+    ]
+}

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="demo.sap.presales.covid19.cv::CV_HISTORY_MONITOR" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="CV_HISTORY_MONITOR"/>
+<localVariables>
+  <variable id="StartDate" parameter="true">
+    <descriptions defaultDescription=""/>
+    <variableProperties datatype="TIMESTAMP" mandatory="true">
+      <valueDomain type="Date"/>
+      <selection multiLine="false" type="SingleValue"/>
+    </variableProperties>
+  </variable>
+  <variable id="EndDate" parameter="true">
+    <descriptions defaultDescription=""/>
+    <variableProperties datatype="TIMESTAMP" mandatory="true">
+      <valueDomain type="Date"/>
+      <selection multiLine="false" type="SingleValue"/>
+    </variableProperties>
+  </variable>
+</localVariables>
+<variableMappings/>
+<dataSources>
+  <DataSource id="demo.sap.presales.covid19.model::covid19.V_ROOMSHISTORYOCCUPATION">
+    <resourceUri>demo.sap.presales.covid19.model::covid19.V_ROOMSHISTORYOCCUPATION</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1" filterExpressionLanguage="SQL">
+    <viewAttributes>
+      <viewAttribute id="DeviceID"/>
+      <viewAttribute id="Description"/>
+      <viewAttribute id="Capacity"/>
+      <viewAttribute id="ts"/>
+      <viewAttribute id="Counter"/>
+    
+      <viewAttribute id="TagsString"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="TimeFrame" datatype="NVARCHAR" length="30" expressionLanguage="SQL">
+        <formula>CONCAT( LPAD (EXTRACT_HOUR(&quot;ts&quot;), 2, '0') , CONCAT( ' - ', LPAD (EXTRACT_HOUR(&quot;ts&quot;)+ 1, 2, '0') ) )</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="demo.sap.presales.covid19.model::covid19.V_ROOMSHISTORYOCCUPATION"/>
+    <filter>&quot;ts&quot; &gt;= '$$StartDate$$' and &quot;ts&quot; &lt;= '$$EndDate$$'</filter>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Projection_1">
+  <attributes>
+    <attribute id="DeviceID" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DeviceID"/>
+      <keyMapping columnObjectName="Projection_1" columnName="DeviceID"/>
+    </attribute>
+    <attribute id="Description" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Description"/>
+      <keyMapping columnObjectName="Projection_1" columnName="Description"/>
+    </attribute>
+    <attribute id="Capacity" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Capacity"/>
+      <keyMapping columnObjectName="Projection_1" columnName="Capacity"/>
+    </attribute>
+    <attribute id="TimeFrame" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="TimeFrame"/>
+      <keyMapping columnObjectName="Projection_1" columnName="TimeFrame"/>
+    </attribute>
+  
+    <attribute id="TagsString" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="TagsString"/>
+  
+      <keyMapping columnObjectName="Projection_1" columnName="TagsString"/>
+  
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="Avg" order="4" aggregationType="avg" measureType="simple">
+      <descriptions defaultDescription="Counter"/>
+      <measureMapping columnObjectName="Projection_1" columnName="Counter"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="95" y="216"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

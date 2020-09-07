@@ -1,0 +1,26 @@
+VIEW "demo.sap.presales.covid19.model::covid19.V_ROOMSHISTORYOCCUPATION"
+AS 
+SELECT TOP 1000 
+	"DeviceID",
+	"Description",
+	"Capacity",
+	ADD_SECONDS(
+		"CreatedAt", 
+		MOD( MINUTE("CreatedAt"), 5 ) * -60 - SECOND("CreatedAt")
+	) AS "ts",
+	SUM("Counter") AS "Counter",
+	"TagsString"
+FROM "demo.sap.presales.covid19.cv::CV_AGGREGATE_DEVICE_EVENTS"
+GROUP BY 
+	"DeviceID",
+	"Type",
+	"Description",
+	"OwnedBy",
+	"Capacity",
+	"Distance",
+	ADD_SECONDS(
+		"CreatedAt", 
+		MOD( MINUTE("CreatedAt"), 5 ) * -60 - SECOND("CreatedAt")
+	),
+	"TagsString";
+	

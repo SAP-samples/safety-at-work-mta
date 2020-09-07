@@ -1,0 +1,140 @@
+{
+    "_version": "1.12.0",
+    "sap.app": {
+        "id": "covid19.ui.dashboard.cv19-tracing-ui-dashboard",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "1.0.0"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "sourceTemplate": {
+            "id": "html5moduletemplates.basicSAPUI5ApplicationProjectModule",
+            "version": "1.40.12"
+        },
+        "dataSources": {
+            "init_data_alias": {
+                "uri": "model/init_data.json",
+                "type": "JSON"
+            },
+            "serviceApi": {
+                "uri": "./service_api/odata/services.xsodata",
+                "type": "OData"
+            }
+        },
+        "crossNavigation": {
+            "inbounds": {
+                "intent1": {
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    },
+                    "semanticObject": "DeviceDashboard",
+                    "action": "display",
+                    "title": "Crowd Monitoring",
+                    "subTitle": "Monitor crowd by device",
+                    "icon": "sap-icon://family-protection"
+                }
+            }
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": false,
+        "rootView": {
+            "viewName": "covid19.ui.dashboard.cv19-tracing-ui-dashboard.view.App",
+            "type": "XML",
+            "async": true,
+            "id": "App"
+        },
+        "dependencies": {
+            "minUI5Version": "1.65.6",
+            "libs": {
+                "sap.ui.core": {},
+                "sap.m": {},
+                "sap.ui.layout": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "": {
+                "type": "sap.ui.model.json.JSONModel",
+                "dataSource": "init_data_alias"
+            },
+            "odata": {
+                "type": "sap.ui.model.odata.v2.ODataModel",
+                "settings": {
+                    "defaultOperationMode": "Server",
+                    "defaultBindingMode": "OneWay",
+                    "defaultCountMode": "None",
+                    "useBatch": false
+                },
+                "dataSource": "serviceApi",
+                "preload": true
+            },
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "covid19.ui.dashboard.cv19-tracing-ui-dashboard.i18n.i18n"
+                }
+            }
+        },
+        "resources": {
+            "css": [
+                {
+                    "uri": "css/style.css"
+                }
+            ]
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "viewType": "XML",
+                "async": true,
+                "viewPath": "covid19.ui.dashboard.cv19-tracing-ui-dashboard.view",
+                "controlAggregation": "pages",
+                "controlId": "idAppControl",
+                "clearControlAggregation": false
+            },
+            "routes": [
+                {
+                    "name": "Main",
+                    "pattern": "",
+                    "titleTarget": "",
+                    "greedy": false,
+                    "target": [
+                        "Main"
+                    ]
+                }
+            ],
+            "targets": {
+                "Main": {
+                    "viewType": "XML",
+                    "viewName": "Main",
+                    "viewLevel": 1,
+                    "controlAggregation": "beginColumnPages",
+                    "clearControlAggregation": true
+                }
+            }
+        }
+    }
+}

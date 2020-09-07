@@ -1,0 +1,1 @@
+sap.ui.define(["sap/ui/test/Opa5"],function(a){"use strict";return a.extend("covid19.ui.dashboard.cv19-tracing-ui-dashboard.test.integration.arrangements.Startup",{iStartMyApp:function(a){var t=a||{};t.delay=t.delay||50;this.iStartMyUIComponent({componentConfig:{name:"covid19.ui.dashboard.cv19-tracing-ui-dashboard",async:true},hash:t.hash,autoWait:t.autoWait})}})});

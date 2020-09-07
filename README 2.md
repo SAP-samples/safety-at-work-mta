@@ -1,6 +1,6 @@
 ![Safety@Work header](/documentation/images/header.png)
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://github.com/DP-3T/dp3t-sdk-ios/blob/master/LICENSE)
 
 Table of contents
 =================
@@ -24,7 +24,7 @@ Table of contents
     - [Function **importEvents**](#function-importevents)
     - [Function **insertEIDs**](#function-inserteids)
     - [Function **insertInfected**](#function-insertinfected)
-  - [License](#license)
+- [License](#license)
 <!--te-->
 
 Prerequisites for deploy
@@ -519,6 +519,6 @@ The structure of the generic HTTP end point is as follow:<br><br>
   - *in case of an empty deviceID returns the message: Missing device ID parameter*
   - *in case distance parameter is not of a number returns the message: Provided distance value is not a number. Please send a number*
   
-## License
 License
-Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. This file is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](LICENSE) file.
+=======
+Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. This file is licensed under the Mozilla MPL, version 2.0 except as noted otherwise in the LICENSE file.

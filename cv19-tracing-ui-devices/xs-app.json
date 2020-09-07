@@ -1,0 +1,22 @@
+{
+  "welcomeFile": "/test/flpSandbox.html",
+  "authenticationMethod": "route",
+  "logout": {
+    "logoutEndpoint": "/do/logout"
+  },
+  "routes": [
+    {
+      "source": "^/cf_cv19contacttracing_anon/(.*)$",
+      "target": "$1",
+      "authenticationType": "none",
+      "destination": "service_api",
+      "csrfProtection": false
+    },
+    {
+      "source": "^(.*)$",
+      "target": "$1",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa"
+    }
+  ]
+}

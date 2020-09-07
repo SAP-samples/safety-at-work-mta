@@ -1,0 +1,13 @@
+COLUMN TABLE "demo.sap.presales.covid19.model::covid19.Infected"(
+	"ID" NVARCHAR(50) NOT NULL,
+	"DeviceID" NVARCHAR(100) NOT NULL,
+	"CreatedAt" LONGDATE,
+	"Attrib1" NVARCHAR(200),
+	"Attrib2" NVARCHAR(200),
+	"Notes" NVARCHAR(2000),
+	"Attrib3" NVARCHAR(200),
+	PRIMARY KEY (
+		"ID"
+	)
+)
+UNLOAD PRIORITY 5 AUTO MERGE;

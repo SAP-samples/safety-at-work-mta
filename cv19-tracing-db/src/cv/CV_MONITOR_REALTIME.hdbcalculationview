@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="demo.sap.presales.covid19.cv::CV_MONITOR_REALTIME" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="CV_MONITOR_REALTIME"/>
+<localVariables>
+  <variable id="TimeFrameInMinutes" parameter="true">
+    <descriptions defaultDescription="Minute from now to use for the ananlysis"/>
+    <variableProperties datatype="INTEGER" mandatory="false">
+      <valueDomain type="empty"/>
+      <selection multiLine="false" type="SingleValue"/>
+    </variableProperties>
+  </variable>
+</localVariables>
+<variableMappings/>
+<dataSources>
+  <DataSource id="demo.sap.presales.covid19.cv::CV_AGGREGATE_DEVICE_EVENTS">
+    <resourceUri>demo.sap.presales.covid19.cv::CV_AGGREGATE_DEVICE_EVENTS</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1" filterExpressionLanguage="SQL">
+    <viewAttributes>
+      <viewAttribute id="Counter"/>
+      <viewAttribute id="DeviceID"/>
+      <viewAttribute id="Type"/>
+      <viewAttribute id="Description"/>
+      <viewAttribute id="OwnedBy"/>
+      <viewAttribute id="Capacity"/>
+      <viewAttribute id="Distance"/>
+      <viewAttribute id="CreatedAt"/>
+    
+      <viewAttribute id="TagsString"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="demo.sap.presales.covid19.cv::CV_AGGREGATE_DEVICE_EVENTS"/>
+    <filter>&quot;CreatedAt&quot; &gt;= ADD_SECONDS(CURRENT_TIMESTAMP, -1 * 60 * '$$TimeFrameInMinutes$$')</filter>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Projection_1">
+  <attributes>
+    <attribute id="DeviceID" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="DeviceID"/>
+      <keyMapping columnObjectName="Projection_1" columnName="DeviceID"/>
+    </attribute>
+    <attribute id="Type" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Type"/>
+      <keyMapping columnObjectName="Projection_1" columnName="Type"/>
+    </attribute>
+    <attribute id="Description" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Description"/>
+      <keyMapping columnObjectName="Projection_1" columnName="Description"/>
+    </attribute>
+    <attribute id="OwnedBy" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="OwnedBy"/>
+      <keyMapping columnObjectName="Projection_1" columnName="OwnedBy"/>
+    </attribute>
+    <attribute id="Capacity" order="6" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Capacity"/>
+      <keyMapping columnObjectName="Projection_1" columnName="Capacity"/>
+    </attribute>
+    <attribute id="Distance" order="7" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Distance"/>
+      <keyMapping columnObjectName="Projection_1" columnName="Distance"/>
+    </attribute>
+    <attribute id="CreatedAt" order="8" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CreatedAt"/>
+      <keyMapping columnObjectName="Projection_1" columnName="CreatedAt"/>
+    </attribute>
+  
+    <attribute id="TagsString" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="TagsString"/>
+      <keyMapping columnObjectName="Projection_1" columnName="TagsString"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes>
+    <calculatedAttribute id="MeasuredPercentage" order="9" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <keyCalculation datatype="INTEGER" expressionLanguage="SQL">
+        <formula>&quot;Measured&quot; * 100/&quot;Capacity&quot;</formula>
+      </keyCalculation>
+      </calculatedAttribute>
+  </calculatedAttributes>
+  <baseMeasures>
+    <measure id="Measured" order="1" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="Counter"/>
+      <measureMapping columnObjectName="Projection_1" columnName="Counter"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="118" y="197"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

@@ -1,0 +1,9 @@
+COLUMN TABLE "demo.sap.presales.covid19.model::covid19.Tag"(
+	"Key" NVARCHAR(100) NOT NULL,
+	"Type" NVARCHAR(100) NOT NULL,
+	"Value" NVARCHAR(100) NOT NULL,
+	PRIMARY KEY (
+		"Key"
+	)
+)
+UNLOAD PRIORITY 5 AUTO MERGE;

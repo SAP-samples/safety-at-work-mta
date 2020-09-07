@@ -1,0 +1,13 @@
+COLUMN TABLE "demo.sap.presales.covid19.model::covid19.ProximityDetected"(
+	"CreatedAt" LONGDATE NOT NULL,
+	"EIDInfected" NVARCHAR(50) NOT NULL,
+	"EIDMatched" NVARCHAR(50) NOT NULL,
+	"EventTS" LONGDATE NOT NULL,
+	PRIMARY KEY (
+		"CreatedAt",
+		"EIDInfected",
+		"EIDMatched",
+		"EventTS"
+	)
+)
+UNLOAD PRIORITY 5 AUTO MERGE;

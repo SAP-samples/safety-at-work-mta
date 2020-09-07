@@ -1,0 +1,138 @@
+<edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+	<edmx:Reference Uri="/cf_cv19contacttracing_anon/odata/services.xsodata/$metadata">
+		<edmx:Include Alias="Metadata" Namespace="default"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://wiki.scn.sap.com/wiki/download/attachments/448470968/UI.xml?api=v2">
+		<edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+	</edmx:Reference>
+	<edmx:Reference Uri="https://wiki.scn.sap.com/wiki/download/attachments/448470974/Common.xml?api=v2">
+		<edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+	</edmx:Reference>
+	<edmx:DataServices>
+		<Schema xmlns="http://docs.oasis-open.org/odata/ns/edm"
+			Namespace="covid19-contact-tracing-be.cv19-tracing-ui-devices.model.annotation0.default">
+			<Annotations Target="Metadata.DeviceSetType">
+				<Annotation Term="UI.FieldGroup" Qualifier="GeneralInfoFG">
+					<Record Type="UI.FieldGroupType">
+						<PropertyValue Property="Data">
+							<Collection>
+								<!--<Record Type="UI.DataField">
+									<PropertyValue Property="Value" Path="toTags/TagKey"/>
+									<PropertyValue Property="Label" String="{@i18n&gt;DEVICE'S_TAGS}"/>
+								</Record>-->
+								<Record Type="UI.DataField">
+									<PropertyValue Property="Value" Path="DeviceID"/>
+									<PropertyValue Property="Label" String="{@i18n&gt;ID}"/>
+								</Record>
+								<Record Type="UI.DataField">
+									<PropertyValue Property="Value" Path="Major"/>
+									<PropertyValue Property="Label" String="{@i18n&gt;BEACON_MAJOR_VALUE}"/>
+								</Record>
+								<Record Type="UI.DataField">
+									<PropertyValue Property="Value" Path="Minor"/>
+									<PropertyValue Property="Label" String="{@i18n&gt;BEACON_MINOR_VALUE}"/>
+								</Record>
+								<Record Type="UI.DataField">
+									<PropertyValue Property="Value" Path="Type"/>
+									<PropertyValue Property="Label" String="{@i18n&gt;TYPE}"/>
+								</Record>
+								<Record Type="UI.DataField">
+									<PropertyValue Property="Value" Path="Description"/>
+									<PropertyValue Property="Label" String="{@i18n&gt;DESCRIPTION}"/>
+								</Record>
+								<Record Type="UI.DataField">
+									<PropertyValue Property="Value" Path="Capacity"/>
+									<PropertyValue Property="Label" String="{@i18n&gt;PEOPLE_CAPACITY}"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+						<PropertyValue Property="Label" String="{@i18n&gt;GENERAL_INFO}"/>
+					</Record>
+				</Annotation>
+				<Annotation Term="UI.Facets">
+					<Collection>
+						<Record Type="UI.ReferenceFacet">
+							<PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#GeneralInfoFG"/>
+							<PropertyValue Property="Label" String="{@i18n&gt;GENERAL_INFO}"/>
+						</Record>
+					</Collection>
+				</Annotation>
+				<Annotation Term="UI.HeaderInfo">
+					<Record Type="UI.HeaderInfoType">
+						<PropertyValue Property="TypeName" String="{@i18n&gt;DEVICE}"/>
+						<PropertyValue Property="TypeNamePlural" String="{@i18n&gt;Devices}"/>
+						<PropertyValue Property="Title">
+							<Record Type="UI.DataField">
+								<PropertyValue Property="Value" Path="Description"/>
+							</Record>
+						</PropertyValue>
+						<PropertyValue Property="Description">
+							<Record Type="UI.DataField">
+								<PropertyValue Property="Value" Path="DeviceID"/>
+								<PropertyValue Property="Label" String="{@i18n&gt;ID}"/>
+							</Record>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+				<Annotation Term="UI.SelectionFields">
+					<Collection>
+						<PropertyPath>DeviceID</PropertyPath>
+						<PropertyPath>Description</PropertyPath>
+						<PropertyPath>Type</PropertyPath>
+					</Collection>
+				</Annotation>
+				<Annotation Term="UI.LineItem">
+					<Collection>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="DeviceID"/>
+							<PropertyValue Property="Label" String="{@i18n&gt;DEVICE_ID}"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="Description"/>
+							<PropertyValue Property="Label" String="{@i18n&gt;DESCRIPTION}"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="Type"/>
+							<PropertyValue Property="Label" String="{@i18n&gt;TYPE}"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="Capacity"/>
+							<PropertyValue Property="Label" String="{@i18n&gt;PEOPLE_CAPACITY}"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="UpdatedAt"/>
+							<PropertyValue Property="Label" String="{@i18n&gt;UPDATED_AT}"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="UpdatedBy"/>
+							<PropertyValue Property="Label" String="{@i18n&gt;UPDATED_BY}"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="Major"/>
+							<PropertyValue Property="Label" String="{@i18n&gt;BEACON_MAJOR_VALUE}"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="Minor"/>
+							<PropertyValue Property="Label" String="{@i18n&gt;BEACON_MINOR_VALUE}"/>
+						</Record>
+					</Collection>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="Metadata.DeviceTagSetType/TagKey">
+				<Annotation Term="Common.ValueList">
+					<Record Type="Common.ValueListType">
+						<PropertyValue Property="CollectionPath" String="TagSet"/>
+						<PropertyValue Property="Parameters">
+							<Collection>
+								<Record Type="Common.ValueListParameterInOut">
+									<PropertyValue Property="LocalDataProperty" PropertyPath="TagKey"/>
+									<PropertyValue Property="ValueListProperty" String="Key"/>
+								</Record>
+							</Collection>
+						</PropertyValue>
+					</Record>
+				</Annotation>
+			</Annotations>
+		</Schema>
+	</edmx:DataServices>
+</edmx:Edmx>

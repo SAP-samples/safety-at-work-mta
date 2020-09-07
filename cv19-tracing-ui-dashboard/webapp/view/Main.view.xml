@@ -1,0 +1,61 @@
+<mvc:View 
+    controllerName="covid19.ui.dashboard.cv19-tracing-ui-dashboard.controller.Main"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    xmlns:layout="sap.ui.layout"
+    xmlns:mvc="sap.ui.core.mvc">
+    <f:DynamicPage 
+        id="dynamicPageId" 
+        class="sapUiNoContentPadding"
+        stickySubheaderProvider="mainPageITB">
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="{i18n>mainPageTitle}"/>
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>
+        <!-- DynamicPage Header -->
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <core:Fragment 
+                    id="F00_DynamicPageHeaderFilterBar"
+                    fragmentName="covid19.ui.dashboard.cv19-tracing-ui-dashboard.view.fragment.Main.F00_DynamicPageHeaderFilterBar" 
+                    type="XML"/>
+            </f:DynamicPageHeader>
+        </f:header>
+        <!-- DynamicPage Content -->
+        <f:content>
+            <IconTabBar 
+                id="mainPageITB"
+                selectedKey="{/selectedTab}">
+                <items>
+					<core:Fragment 
+                        id="F01_RealTimeDevicesSituationTab"
+						fragmentName="covid19.ui.dashboard.cv19-tracing-ui-dashboard.view.fragment.Main.F01_RealTimeDevicesSituationTab" 
+						type="XML"/>
+					<core:Fragment 
+                        id="F02_HistoryDataHeatmapTab"
+						fragmentName="covid19.ui.dashboard.cv19-tracing-ui-dashboard.view.fragment.Main.F02_HistoryDataHeatmapTab" 
+						type="XML"/>
+                </items>
+            </IconTabBar>
+        </f:content>
+        <!-- DynamicPage Footer -->
+        <f:footer>
+            <OverflowToolbar>
+                <Button icon="sap-icon://message-popup"
+                        text="{/messagesLength}"
+                        type="Emphasized"
+                        press="onMessageButtonPress"
+                        visible="{= !!${/messagesLength}}"/>
+                <ToolbarSpacer/>
+                <Button type="Accept" text="Accept"/>
+                <Button type="Reject" text="Reject"/>
+            </OverflowToolbar>
+        </f:footer>
+    </f:DynamicPage>
+</mvc:View>

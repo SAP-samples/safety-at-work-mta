@@ -1,0 +1,63 @@
+<core:FragmentDefinition 
+	xmlns="sap.m" 
+	xmlns:f="sap.ui.layout.form" 
+	xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" 
+	xmlns:core="sap.ui.core">
+	<fb:FilterBar 
+		id="mainPageFilterBar" 
+		class="sapUiSizeCompact"
+		reset="onFilterBarReset" 
+		search="onFilterBarSearch" 
+		useToolbar="false" 
+		showGoOnFB="true">
+		<fb:filterItems>
+			
+			<!-- Device name -->
+			<fb:FilterItem name="deviceDescription" label="{i18n>deviceDescription}">
+				<fb:control>
+					<Input 
+                        placeholder="{i18n>deviceDescriptionInputPlaceholder}"/>
+				</fb:control>				
+			</fb:FilterItem>				
+			
+			<!-- Device Tags -->		
+			<fb:FilterItem name="deviceTags" label="{i18n>deviceTags}">
+				<fb:control>
+					<MultiComboBox
+                        id="tagsMultiComboBoxFilter"
+						showSecondaryValues= "true"
+						items="{
+							path: 'odata>/TagSet',
+							sorter: { 
+                                path: 'Type',
+                                descending: false,
+                                group: true
+                            }
+						}"
+						change="onDeviceTagsMCValueChange">
+						<core:ListItem 
+							key="{odata>Key}" 
+							text="{odata>Value}"
+                            additionalText="{odata>Type}"/>
+                        <customData>
+                            <core:CustomData
+                                key="additionalText"
+                                value="{odata>Type}"/>
+                        </customData>
+					</MultiComboBox>
+				</fb:control>				
+			</fb:FilterItem>
+			
+			<!-- Date range -->		
+			<fb:FilterItem name="dateRange" label="{i18n>dateRange}" visible="{=${/selectedTab}==='historyDataHeatmap' }">
+				<fb:control>
+					<DateRangeSelection
+                        placeholder="{i18n>dateRangePlaceholderText}"
+						change="onDateRangeFilterChange"/>
+				</fb:control>				
+			</fb:FilterItem>
+
+		</fb:filterItems>
+	</fb:FilterBar>
+</core:FragmentDefinition>

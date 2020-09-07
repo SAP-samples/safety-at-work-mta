@@ -1,0 +1,12 @@
+COLUMN TABLE "demo.sap.presales.covid19.model::covid19.Event"(
+	"SourceEID" NVARCHAR(50) NOT NULL,
+	"TargetIED" NVARCHAR(50) NOT NULL,
+	"Distance" DECIMAL,
+	"CreatedAt" LONGDATE NOT NULL,
+	PRIMARY KEY (
+		"SourceEID",
+		"TargetIED",
+		"CreatedAt"
+	)
+)
+UNLOAD PRIORITY 5 AUTO MERGE;

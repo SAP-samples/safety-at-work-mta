@@ -1,0 +1,64 @@
+<mvc:View controllerName="covid19.ui.devicesmanagement.cv19-tracing-ui-devices.controller.Master" xmlns="sap.m" xmlns:f="sap.f"
+	xmlns:mvc="sap.ui.core.mvc" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" xmlns:smartTable="sap.ui.comp.smarttable">
+	<f:DynamicPage id="uploadPageId" toggleHeaderOnTitleClick="false" stickySubheaderProvider="iconTabBar" showFooter="true">
+		<!-- DynamicPage Title -->
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title id="masterPageTitle" text="{masterView>/title}" level="H2"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<smartFilterBar:SmartFilterBar id="devicesSmartFilterBar" entitySet="DeviceSet" persistencyKey="DevicesPK"
+					basicSearchFieldName="Description" enableBasicSearch="true"></smartFilterBar:SmartFilterBar>
+			</f:DynamicPageHeader>
+		</f:header>
+		<!-- DynamicPage Content -->
+		<f:content>
+			<smartTable:SmartTable id="devicesSmartTable" entitySet="DeviceSet" smartFilterId="devicesSmartFilterBar" tableType="ResponsiveTable"
+				useExportToExcel="true" beforeExport="onBeforeExport" useVariantManagement="true" useTablePersonalisation="true" header="{i18n>Devices}"
+				showRowCount="true" persistencyKey="SmartTableDevicesPK" enableAutoBinding="true" class="sapUiResponsiveContentPadding">
+				<smartTable:customToolbar>
+					<OverflowToolbar design="Transparent">
+						<ToolbarSpacer/>
+						<OverflowToolbarButton type="Emphasized" icon="sap-icon://add" text="Add Device" press="onAddDevice"/>
+					</OverflowToolbar>
+				</smartTable:customToolbar>
+				<Table itemPress="onSelectionChange" id="innerDevicesTable" growing="true">
+					<ColumnListItem type="Navigation"/>
+				</Table>
+			</smartTable:SmartTable>
+		</f:content>
+		<!-- DynamicPage Footer -->
+		<f:footer></f:footer>
+	</f:DynamicPage>
+	<!--<semantic:SemanticPage id="masterPage" preserveHeaderStateOnScroll="true" toggleHeaderOnTitleClick="false">-->
+	<!--	<semantic:titleHeading>-->
+	<!--	</semantic:titleHeading>-->
+	<!--	<semantic:content>-->
+	<!--		 For client side filtering add this to the items attribute: parameters: {operationMode: 'Client'}}" -->
+	<!--		<List id="list" width="auto" class="sapFDynamicPageAlignContent"-->
+	<!--			items="{ path: '/DeviceSet', sorter: { path: 'Description', descending: false }, groupHeaderFactory: '.createGroupHeader' }"-->
+	<!--			busyIndicatorDelay="{masterView>/delay}" noDataText="{masterView>/noDataText}"-->
+	<!--			mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}" growing="true" growingScrollToLoad="true"-->
+	<!--			updateFinished=".onUpdateFinished" selectionChange=".onSelectionChange">-->
+	<!--			<headerToolbar>-->
+	<!--				<OverflowToolbar>-->
+	<!--					<SearchField id="searchField" showRefreshButton="true" tooltip="{i18n>masterSearchTooltip}" search=".onSearch" width="auto">-->
+	<!--						<layoutData>-->
+	<!--							<OverflowToolbarLayoutData minWidth="150px" maxWidth="240px" shrinkable="true" priority="NeverOverflow"/>-->
+	<!--						</layoutData>-->
+	<!--					</SearchField>-->
+	<!--					<ToolbarSpacer/>-->
+	<!--					<Button id="sortButton" press=".onOpenViewSettings" icon="sap-icon://sort" type="Transparent"/>-->
+	<!--				</OverflowToolbar>-->
+	<!--			</headerToolbar>-->
+	<!--			<items>-->
+	<!--				<ObjectListItem type="Navigation" press=".onSelectionChange" title="{Description}"></ObjectListItem>-->
+	<!--			</items>-->
+	<!--		</List>-->
+	<!--	</semantic:content>-->
+	<!--</semantic:SemanticPage>-->
+</mvc:View>

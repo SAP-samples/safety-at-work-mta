@@ -1,0 +1,18 @@
+COLUMN TABLE "demo.sap.presales.covid19.model::covid19.Device"(
+	"DeviceID" NVARCHAR(100) NOT NULL,
+	"Type" NVARCHAR(50) NOT NULL,
+	"Description" NVARCHAR(200),
+	"OwnedBy" NVARCHAR(100),
+	"CreatedAt" LONGDATE,
+	"CreatedBy" NVARCHAR(100),
+	"UpdatedAt" LONGDATE,
+	"UpdatedBy" NVARCHAR(100),
+	"Capacity" INTEGER,
+	"Major" NVARCHAR(5),
+	"Minor" NVARCHAR(5),
+	
+	PRIMARY KEY (
+		"DeviceID"
+	)
+)
+UNLOAD PRIORITY 5 AUTO MERGE;

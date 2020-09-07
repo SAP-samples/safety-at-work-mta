@@ -1,0 +1,38 @@
+FUNCTION "demo.sap.presales.covid19.cv::GetMainRequests"( )
+       RETURNS TABLE(
+       	"DeviceID" NVARCHAR(100) NOT NULL,
+		"Type" NVARCHAR(50) NOT NULL,
+		"Description" NVARCHAR(200),
+		"OwnedBy" NVARCHAR(100),
+		"CreatedAt" LONGDATE,
+		"CreatedBy" NVARCHAR(100),
+		"UpdatedAt" LONGDATE,
+		"UpdatedBy" NVARCHAR(100),
+		"Capacity" INTEGER,
+		"TagsString" NVARCHAR(2000)
+       )
+       LANGUAGE SQLSCRIPT 
+       SQL SECURITY INVOKER AS 
+BEGIN 
+
+	var_tags = SELECT "D"."DeviceID", STRING_AGG("DT"."TagKey",';') as "TagsString"
+				FROM "demo.sap.presales.covid19.model::covid19.Device" "D" INNER JOIN "demo.sap.presales.covid19.model::covid19.Device_Tag" "DT"
+				on "D"."DeviceID" = "DT"."DeviceID"
+				GROUP BY "D"."DeviceID";
+
+
+	return 
+	SELECT 
+		"D"."DeviceID",
+		"Type",
+		"Description",
+		"OwnedBy",
+		"CreatedAt",
+		"CreatedBy",
+		"UpdatedAt",
+		"UpdatedBy",
+		"Capacity",
+		"T"."TagsString" as "TagsString"
+	FROM "demo.sap.presales.covid19.model::covid19.Device" "D" INNER JOIN :var_tags "T"
+	ON "D"."DeviceID" = "T"."DeviceID";
+END;
