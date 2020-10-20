@@ -8,6 +8,7 @@ $.import("common.libs", "checkInfection");
 $.import("common.libs", "insertInfected");
 $.import("common.libs", "importEvents");
 $.import("common.libs", "insertEIDs");
+$.import("common.libs", "setReservationApproval");
 
 //Implementation of GET call
 function fnHandlePost() {
@@ -89,6 +90,17 @@ function fnHandlePost() {
 			var iResult = $.common.libs.insertEIDs.execute(oBody.payload);
 			oResult.function = oBody.function;
 			oResult.value = iResult;
+		} else if (oBody.function === "setApprovalStatus") {
+			
+			if (!oBody.payload || oBody.payload === null) {
+				var e = new Error()
+				e.message = "please provide a payload for the function";
+				throw e;
+			} 
+
+			var oRes = $.common.libs.setReservationApproval.execute(oBody.payload);
+			oResult.function = oBody.function;
+			oResult.value = oRes;
 		}
 
 		return oResult;

@@ -1,0 +1,34 @@
+{
+  "dependencies": {
+    "body-parser": "latest",
+    "express": "^4.17.1",
+    "@sap/xssec": "^2.2",
+    "@sap/xsenv": "^2.2",
+    "@sap/textbundle": "latest",
+    "@sap/logging": "~5.2",
+    "@sap/jobs-client": "latest",
+    "passport": "~0.4.0",
+    "async": "latest",
+    "ws": "~7.2",
+    "accept-language-parser": "latest",
+    "elementtree": "latest",
+    "then-request": "latest",
+    "dotenv": "latest",
+    "cfenv": "latest",
+    "axios": "latest"
+  },
+  "description": "my description",
+  "devDependencies": {},
+  "files": [],
+  "main": "server.js",
+  "name": "cv19-tracing-js",
+  "scripts": {
+    "test": "node node_modules/jest/bin/jest --config jest.json",
+    "test-coverage": "node node_modules/jest/bin/jest --coverage --config jest.json",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": "10.x"
+  },
+  "version": "1.0.0"
+}

@@ -1,0 +1,23 @@
+/* Enter your custom styles here */
+
+/* Reservaton Details popover */
+.sapMPopover[data-popoverstatus="ApprovalStatus0"] {
+    border: 2px solid #e9730b;
+}
+.sapMPopover[data-popoverstatus="ApprovalStatus0"] .sapMPopoverArr.sapMPopoverArrUp:after {
+	border: 1px solid #e9730b;
+}
+
+.sapMPopover[data-popoverstatus="ApprovalStatus1"] {
+	border: 2px solid #0e7e3e;
+}
+.sapMPopover[data-popoverstatus="ApprovalStatus1"] .sapMPopoverArr:after {
+	border: 1px solid #0e7e3e;
+}
+
+.sapMPopover[data-popoverstatus="ApprovalStatus2"] {
+	border: 2px solid #bb0202;
+}
+.sapMPopover[data-popoverstatus="ApprovalStatus2"] .sapMPopoverArr:after {
+	border: 1px solid #bb0202 !important;
+}

@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+    <head>
+        <style>
+			.header {
+				margin-top: 1rem;
+				height: 2rem;
+			}
+            h1 {
+				height: 30px;
+				line-height: 30px;
+                font-size: 1.2rem;
+            }
+			table {
+				border-collapse: collapse;
+				width: 100%;
+				max-width: 550px;
+			}
+			thead>tr{
+				background-color: lightgray;
+				color: black;
+			}
+			td, th {
+				border: 1px solid black;
+				text-align: left;
+				padding: 8px;
+			}
+        </style>
+    </head>
+    <body>
+		<p>Dear ${context.u.n},</p>
+		<p>${context.cv19Data.emailMessage}</p>
+		<p>Thanks.<br>WF management system</p>
+    </body>
+</html>

@@ -1,0 +1,107 @@
+{
+    "resources": [
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/model/formatter-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/xs-app.json"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/manifest.json"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/util/lodash.js"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/util/formatter.js"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/model/init_data.json"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/model/models.js"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/model/formatter.js"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/controller/Main.controller.js"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/controller/BaseController.js"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/controller/App.controller.js"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/Component.js"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/manifest-bundle.zip"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/Component-preload.js",
+            "merged": true
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/util/lodash-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/util/formatter-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/model/models-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/i18n/i18n.properties",
+            "raw": "i18n/i18n.properties"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/controller/Main-dbg.controller.js",
+            "isDebug": true
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/controller/BaseController-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/controller/App-dbg.controller.js",
+            "isDebug": true
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/Component-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "../../sap-ui-version.json"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/view/fragment/Main/D1_ReservationDetailsPopover.fragment.xml"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/view/fragment/Main/D0_NewAppointmentCreationDialog.fragment.xml"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/resources/img/favicon.ico"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/view/Main.view.xml"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/view/App.view.xml"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/css/style.css"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/index.html"
+        },
+        {
+            "name": "../../covid19/ui/booking/cv19-tracing-ui-booking/.DS_Store"
+        }
+    ]
+}

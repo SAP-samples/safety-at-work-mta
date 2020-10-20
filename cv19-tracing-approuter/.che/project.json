@@ -1,1 +1,1 @@
-{"type":"approuter.nodejs","builders":{"default":"sap.nodejs","configs":{}},"runners":{"configs":{}},"attributes":{},"description":"covid19-contact-tracing-be-approuter","mixinTypes":["mtamodule"]}
+{"type":"approuter.nodejs","builders":{"default":"sap.nodejs","configs":{}},"runners":{"configs":{}},"attributes":{"sap.watt.common.setting":["{\"projectType\":[\"approuter.nodejs\"]}"]},"description":"covid19-contact-tracing-be-approuter","mixinTypes":["mtamodule"]}

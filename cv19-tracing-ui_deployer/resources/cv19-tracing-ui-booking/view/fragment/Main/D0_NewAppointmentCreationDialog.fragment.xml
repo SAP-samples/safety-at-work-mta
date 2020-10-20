@@ -1,0 +1,160 @@
+<core:FragmentDefinition 
+	xmlns="sap.m" 
+	xmlns:f="sap.ui.layout.form" 
+	xmlns:fb="sap.ui.comp.filterbar" 
+	xmlns:l="sap.ui.layout" 
+	xmlns:core="sap.ui.core">
+	<Dialog
+		class="sapUiContentPadding" 
+		busyIndicatorDelay="0"
+		busy="{/busy}" 
+		binding="{/newReservation}"
+		title="{i18n>newReservationDialogTitle}"
+		stretch="{device>/system/phone}"
+		afterOpen="onNewReservationDialogAfterOpen">
+		<VBox 
+			class="sapUiContentPadding" 
+			width="100%">
+
+			<!-- Room -->
+			<Label 
+				text="{i18n>selectRoom}: " 
+				labelFor="roomSelect"
+				required="true" />
+			<Select
+				id="selectRoom"
+				class="sapUiTinyMarginBottom" 
+				width="100%"
+				showSecondaryValues= "true"
+				forceSelection="false"
+				change="onSelectRoomSelectionChange"
+				selectedKey="{RoomID}"
+				items="{
+					path: '/rooms',
+					sorter: { path: 'Description' }
+				}">
+				<core:ListItem 
+					key="{DeviceID}" 
+					text="{Description}" 
+					additionalText= "{i18n>capacity}: {Capacity}"/>
+			</Select>
+			
+			<VBox 
+				visible="{= ${RoomID} !== null }">
+
+				<!-- Subject -->
+				<Label 
+					text="{i18n>subject}: " 
+					labelFor="subjectInput" 
+					required="true"/>
+				<Input 
+					id="subjectInput" 
+					class="sapUiTinyMarginBottom"
+					placeholder="{i18n>subjectInputPlaceholder}"
+					value="{subject}"/>
+					
+				<!-- Start Date -->
+				<Label 
+					text="{i18n>startDate}: " 
+					labelFor="startDate"
+					required="true" />
+				<DateTimePicker 
+					id="startDate" 
+					class="sapUiTinyMarginBottom" 
+					placeholder="{i18n>startDatePlaceholder}"
+					minDate="{/startDateDatePickerMinDate}"
+					minutesStep="15"
+					secondsStep="60"
+					displayFormat="short" 
+					required="true" 
+					change="onDateTimePickerChange">
+					<customData>
+                        <core:CustomData 
+                            key="whichDate"
+                            value="DateStart"/>
+                    </customData>
+				</DateTimePicker>
+				
+				<!-- End Date -->
+				<Label 
+					text="{i18n>endDate}: " 
+					labelFor="endDate"
+					required="true" />
+				<DateTimePicker 
+					id="endDate" 
+					class="sapUiTinyMarginBottom" 
+					placeholder="{i18n>endDatePlaceholder}"
+					minDate="{/endDateDatePickerMinDate}"
+					minutesStep="15"
+					secondsStep="60"
+					displayFormat="short" 
+					required="true" 
+					change="onDateTimePickerChange">
+					<customData>
+                        <core:CustomData 
+                            key="whichDate"
+                            value="DateEnd"/>
+                    </customData>
+				</DateTimePicker>
+	
+				<!-- ParticipantsNumber -->
+				<Label 
+					text="{i18n>participantsNumber}: " 
+					labelFor="nrOfPeopleSlider" 
+					required="true"/>
+				<l:Grid
+					width="100%"
+					hSpacing="0"
+					vSpacing="0">
+					<Slider 
+						id="nrOfPeopleSlider"
+						class="sapUiMediumMarginBottom" 
+						enableTickmarks="true" 
+						min="1" 
+						max="{Capacity}" 
+						value="{/newReservation/PartecipantsNumber}"
+						width="100%">
+						<layoutData>
+							<l:GridData 
+								span="XL9 L9 M9 S9"/>
+						</layoutData>
+					</Slider>
+					<Input
+						change="onParticipantsNumberValueChange"
+						value="{/newReservation/PartecipantsNumber}"
+						type="Number"
+						width="100%">
+						<layoutData>
+							<l:GridData 
+								span="XL3 L3 M3 S3"/>
+						</layoutData>
+					</Input>
+				</l:Grid>
+
+				<!-- Notes -->
+				<Label 
+					text="{i18n>newReservationNotes}: " 
+					labelFor="notesTextArea" 
+					required="false"/>
+				<TextArea 
+					id="notesTextArea"
+					placeholder="{i18n>inputNotesPlaceholder}"
+					value="{Notes}"
+					rows="3"
+					width="100%"/>
+			</VBox>
+		</VBox>
+		<beginButton>
+			<Button 
+				text="{i18n>save}" 
+				type="Emphasized" 
+				press="onNewReservationDialogSaveButton" />
+		</beginButton>
+		<endButton>
+			<Button 
+				text="{i18n>cancel}"
+				type="Transparent" 
+				press="onNewReservationDialogCancelButton" />
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,1 @@
+sap.ui.define(["cv19/tracing/area/booking/cv19-tracing-area-booking/controller/View1.controller"],function(n){"use strict";QUnit.module("View1 Controller");QUnit.test("I should test the View1 controller",function(o){var t=new n;t.onInit();o.ok(t)})});

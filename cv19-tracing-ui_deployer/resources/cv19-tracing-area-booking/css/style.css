@@ -1,0 +1,38 @@
+/* Enter your custom styles here */
+.areaBookingListItem button {
+	position: absolute !important;
+	right: 1rem !important;
+	bottom: 1.8rem !important;
+}
+
+.customCellImageBackground {
+	color: #fff;
+	background-image: url("new_normal.jpg");
+	background-size: 100% auto;
+	background-position: 0 26%;
+	min-height: 200px;
+    max-height: 400px;
+}
+
+.customCellImageBackground .sapUiBlockCellContent,
+.customCellImageBackground .sapUiBlockCellContent .sapMTitle {
+	color: #fff;
+}
+
+.mainDynamicPage header {
+    padding: 0px !important;
+}
+
+.mainDynamicPage .sapFDynamicPageContent {
+    padding: 0px !important;
+}
+
+[title="Area is full"] {
+    background-color: #bb0000 !important;
+    color: white !important;
+}
+
+[title="Area is Crowded"]:not(.sapUiCalItemSel) {
+    background-color: #e9730c !important;
+    color: white !important;
+}

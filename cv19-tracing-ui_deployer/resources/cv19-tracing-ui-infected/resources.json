@@ -1,13 +1,19 @@
 {
     "resources": [
         {
-            "name": "controller/BaseController.js"
-        },
-        {
             "name": "CopyOfmanifest.json"
         },
         {
             "name": "manifest.json"
+        },
+        {
+            "name": "model/models.js"
+        },
+        {
+            "name": "model/formatter.js"
+        },
+        {
+            "name": "localService/mockserver.js"
         },
         {
             "name": "controller/NotFound.controller.js"
@@ -31,20 +37,10 @@
             "name": "controller/Detail.controller.js"
         },
         {
-            "name": "i18n/i18n.properties",
-            "raw": "i18n/i18n.properties"
+            "name": "controller/BaseController.js"
         },
         {
             "name": "controller/App.controller.js"
-        },
-        {
-            "name": "model/models.js"
-        },
-        {
-            "name": "model/formatter.js"
-        },
-        {
-            "name": "localService/mockserver.js"
         },
         {
             "name": "CopyOfComponent.js"
@@ -117,6 +113,10 @@
         },
         {
             "name": "../../../../sap-ui-version.json"
+        },
+        {
+            "name": "i18n/i18n.properties",
+            "raw": "i18n/i18n.properties"
         },
         {
             "name": "view/ViewSettingsDialog.fragment.xml"

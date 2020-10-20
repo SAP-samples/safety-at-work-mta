@@ -34,6 +34,8 @@
 				</Key>
 				<Property Name="DeviceID" Type="Edm.String" Nullable="false" MaxLength="100"/>
 				<Property Name="TagKey" Type="Edm.String" Nullable="false" MaxLength="100"/>
+				<NavigationProperty Name="toTag" Relationship="default.DeviceTag_TagsType" FromRole="DeviceTagSetPrincipal" ToRole="TagSetDependent"
+					sap:creatable="false" sap:filterable="false"/>
 			</EntityType>
 			<EntityType Name="EphemeralIDSetType">
 				<Key>
@@ -136,6 +138,52 @@
 				<Property Name="TagsString" Type="Edm.String" MaxLength="2000" sap:label="TagsString" sap:aggregation-role="dimension"/>
 				<Property Name="Avg" Type="Edm.Decimal" Precision="16" Scale="6" sap:label="Counter" sap:aggregation-role="measure" sap:filterable="false"/>
 			</EntityType>
+			<EntityType Name="DeviceUserViewSetType">
+				<Key>
+					<PropertyRef Name="DeviceID"/>
+				</Key>
+				<Property Name="DeviceID" Type="Edm.String" Nullable="false" MaxLength="100"/>
+				<Property Name="Description" Type="Edm.String" MaxLength="200"/>
+			</EntityType>
+			<EntityType Name="RoomAreaSetType">
+				<Key>
+					<PropertyRef Name="DeviceID"/>
+				</Key>
+				<Property Name="DeviceID" Type="Edm.String" Nullable="false" MaxLength="100"/>
+				<Property Name="Description" Type="Edm.String" MaxLength="200"/>
+			</EntityType>
+			<EntityType Name="RoomSetType">
+				<Key>
+					<PropertyRef Name="DeviceID"/>
+				</Key>
+				<Property Name="DeviceID" Type="Edm.String" Nullable="false" MaxLength="100"/>
+				<Property Name="Description" Type="Edm.String" MaxLength="200"/>
+			</EntityType>
+			<EntityType Name="AreaSetType">
+				<Key>
+					<PropertyRef Name="DeviceID"/>
+				</Key>
+				<Property Name="DeviceID" Type="Edm.String" Nullable="false" MaxLength="100"/>
+				<Property Name="Description" Type="Edm.String" MaxLength="200"/>
+			</EntityType>
+			<EntityType Name="ReservationSetType">
+				<Key>
+					<PropertyRef Name="ID"/>
+				</Key>
+				<Property Name="ID" Type="Edm.Int64" Nullable="false"/>
+				<Property Name="Subject" Type="Edm.String" Nullable="false" MaxLength="200"/>
+				<Property Name="DateStart" Type="Edm.DateTime"/>
+				<Property Name="DateEnd" Type="Edm.DateTime"/>
+				<Property Name="PartecipantsNumber" Type="Edm.Int32"/>
+				<Property Name="Notes" Type="Edm.String" MaxLength="2000"/>
+				<Property Name="RoomID" Type="Edm.String" Nullable="false" MaxLength="100"/>
+				<Property Name="EmployeeID" Type="Edm.String" Nullable="false" MaxLength="100"/>
+				<Property Name="ApprovalStatus" Type="Edm.Byte"/>
+				<NavigationProperty Name="toRoom" Relationship="default.Reservation_RoomType" FromRole="ReservationSetPrincipal" ToRole="DeviceSetDependent"
+					sap:creatable="false" sap:filterable="false"/>
+				<NavigationProperty Name="toEmployee" Relationship="default.Reservation_EmployeeType" FromRole="ReservationSetPrincipal"
+					ToRole="DeviceSetDependent" sap:creatable="false" sap:filterable="false"/>
+			</EntityType>
 			<EntityType Name="RealTimeRoomStatusParametersType" sap:semantics="parameters">
 				<Key>
 					<PropertyRef Name="TimeFrameInMinutes"/>
@@ -195,6 +243,18 @@
 				<End Type="default.ProximityDetectedSetType" Role="ProximityDetectedSetPrincipal" Multiplicity="1"/>
 				<End Type="default.EphemeralIDSetType" Role="EphemeralIDSetDependent" Multiplicity="1"/>
 			</Association>
+			<Association Name="Reservation_RoomType">
+				<End Type="default.ReservationSetType" Role="ReservationSetPrincipal" Multiplicity="1"/>
+				<End Type="default.DeviceSetType" Role="DeviceSetDependent" Multiplicity="1"/>
+			</Association>
+			<Association Name="Reservation_EmployeeType">
+				<End Type="default.ReservationSetType" Role="ReservationSetPrincipal" Multiplicity="1"/>
+				<End Type="default.DeviceSetType" Role="DeviceSetDependent" Multiplicity="1"/>
+			</Association>
+			<Association Name="DeviceTag_TagsType">
+				<End Type="default.DeviceTagSetType" Role="DeviceTagSetPrincipal" Multiplicity="1"/>
+				<End Type="default.TagSetType" Role="TagSetDependent" Multiplicity="1"/>
+			</Association>
 			<Association Name="RealTimeRoomStatusParameters_to_RealTimeRoomStatusType">
 				<End Type="default.RealTimeRoomStatusParametersType" Role="RealTimeRoomStatusParametersPrincipal" Multiplicity="1"/>
 				<End Type="default.RealTimeRoomStatusType" Role="RealTimeRoomStatusDependent" Multiplicity="*"/>
@@ -216,6 +276,12 @@
 					sap:updatable="false" sap:deletable="false"/>
 				<EntitySet Name="HistoryDevicesStatus" EntityType="default.HistoryDevicesStatusType" sap:addressable="false" sap:creatable="false"
 					sap:updatable="false" sap:deletable="false"/>
+				<EntitySet Name="DeviceUserViewSet" EntityType="default.DeviceUserViewSetType" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false"/>
+				<EntitySet Name="RoomAreaSet" EntityType="default.RoomAreaSetType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+				<EntitySet Name="RoomSet" EntityType="default.RoomSetType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+				<EntitySet Name="AreaSet" EntityType="default.AreaSetType" sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
+				<EntitySet Name="ReservationSet" EntityType="default.ReservationSetType"/>
 				<EntitySet Name="RealTimeRoomStatusParameters" EntityType="default.RealTimeRoomStatusParametersType" sap:addressable="false"
 					sap:creatable="false" sap:updatable="false" sap:deletable="false"/>
 				<EntitySet Name="HistoryDevicesStatusParameters" EntityType="default.HistoryDevicesStatusParametersType" sap:addressable="false"
@@ -259,6 +325,18 @@
 				<AssociationSet Name="ProximityDetected_EphemeralID" Association="default.ProximityDetected_EphemeralIDType">
 					<End Role="ProximityDetectedSetPrincipal" EntitySet="ProximityDetectedSet"/>
 					<End Role="EphemeralIDSetDependent" EntitySet="EphemeralIDSet"/>
+				</AssociationSet>
+				<AssociationSet Name="Reservation_Room" Association="default.Reservation_RoomType">
+					<End Role="ReservationSetPrincipal" EntitySet="ReservationSet"/>
+					<End Role="DeviceSetDependent" EntitySet="DeviceSet"/>
+				</AssociationSet>
+				<AssociationSet Name="Reservation_Employee" Association="default.Reservation_EmployeeType">
+					<End Role="ReservationSetPrincipal" EntitySet="ReservationSet"/>
+					<End Role="DeviceSetDependent" EntitySet="DeviceSet"/>
+				</AssociationSet>
+				<AssociationSet Name="DeviceTag_Tags" Association="default.DeviceTag_TagsType">
+					<End Role="DeviceTagSetPrincipal" EntitySet="DeviceTagSet"/>
+					<End Role="TagSetDependent" EntitySet="TagSet"/>
 				</AssociationSet>
 				<AssociationSet Name="RealTimeRoomStatusParameters_to_RealTimeRoomStatus"
 					Association="default.RealTimeRoomStatusParameters_to_RealTimeRoomStatusType" sap:creatable="false" sap:updatable="false"

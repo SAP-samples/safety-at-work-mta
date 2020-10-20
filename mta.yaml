@@ -2,25 +2,34 @@ ID: covid19-contact-tracing-be
 _schema-version: '2.1'
 parameters:
   deploy_mode: html5-repo
-version: 1.0.1
+version: 1.0.2
 modules:
   - name: cv19-tracing-approuter
     type: approuter.nodejs
     path: cv19-tracing-approuter
+    properties:
+      XS_APP_LOG_LEVEL: debug
+      REQUEST_TRACE: true
     parameters:
       disk-quota: 256M
       memory: 256M
     requires:
       - name: cv19-tracing-html5_repo_runtime
-      - name: uaa_covid19-contact-tracing-be
       - name: cv19-tracing-xsjs_api
         properties:
           url: '~{url}'
           name: service_api
           forwardAuthToken: true
         group: destinations
-      - name: cv19-tracing-uaa
+      - name: cv19-tracing-js_api
+        properties:
+          url: '~{url}'
+          name: js_api
+          forwardAuthToken: true
+        group: destinations
       - name: portal_resources_cv19-tracing
+      - name: uaa_covid19-contact-tracing-be
+      - name: workflow_covid19-contact-tracing-be
   - name: cv19-tracing-ui_deployer
     type: com.sap.html5.application-content
     path: cv19-tracing-ui_deployer
@@ -40,6 +49,14 @@ modules:
           artifacts:
             - './*'
           target-path: resources/cv19-tracing-ui-dashboard
+        - name: cv19-tracing-ui-booking
+          artifacts:
+            - './*'
+          target-path: resources/cv19-tracing-ui-booking
+        - name: cv19-tracing-area-booking
+          artifacts:
+            - './*'
+          target-path: resources/cv19-tracing-area-booking
   - name: cv19-tracing-db
     type: hdb
     path: cv19-tracing-db
@@ -48,6 +65,9 @@ modules:
   - name: cv19-tracing-xsjs
     type: nodejs
     path: cv19-tracing-xsjs
+    properties:
+      XS_APP_LOG_LEVEL: debug
+      SAP_JWT_TRUST_ACL: '[{"clientid":"*","identityzone":"*"}]'
     parameters:
       disk-quota: 1024M
       memory: 256M
@@ -56,7 +76,7 @@ modules:
         properties:
           url: '${default-url}'
     requires:
-      - name: cv19-tracing-uaa
+      - name: uaa_covid19-contact-tracing-be
       - name: hdi_cv19-tracing-db
       - name: application-log-srv
   - name: cv19-tracing-ui-devices
@@ -107,6 +127,50 @@ modules:
       - name: uaa_covid19-contact-tracing-be
       - name: cv19-tracing-html5_repo_host
       - name: cv19-tracing-ui_deployer
+      - name: workflow_covid19-contact-tracing-be
+  - name: cv19-tracing-ui-booking
+    type: html5
+    path: cv19-tracing-ui-booking
+    build-parameters:
+      builder: custom
+      commands:
+        - npm install
+        - npm run build
+      supported-platforms: []
+      build-result: dist
+    requires:
+      - name: cv19-tracing-html5_repo_runtime
+  - name: cv19-tracing-js
+    type: nodejs
+    path: cv19-tracing-js
+    parameters:
+      disk-quota: 256M
+      memory: 128M
+    provides:
+      - name: cv19-tracing-js_api
+        properties:
+          url: '${default-url}'
+    requires:
+      - name: uaa_covid19-contact-tracing-be
+  - name: cv19-tracing-area-booking
+    type: html5
+    path: cv19-tracing-area-booking
+    build-parameters:
+      builder: custom
+      commands:
+        - npm install
+        - npm run build
+      supported-platforms: []
+      build-result: dist
+    requires:
+      - name: cv19-tracing-html5_repo_runtime
+  - name: cv19-tracing-wf
+    type: com.sap.application.content
+    path: cv19-tracing-wf
+    requires:
+      - name: workflow_covid19-contact-tracing-be
+        parameters:
+          content-target: true
 resources:
   - name: cv19-tracing-html5_repo_runtime
     parameters:
@@ -115,6 +179,8 @@ resources:
     type: org.cloudfoundry.managed-service
   - name: cv19-tracing-html5_repo_host
     parameters:
+      config:
+        sizeLimit: 5
       service-plan: app-host
       service: html5-apps-repo
     type: org.cloudfoundry.managed-service
@@ -122,12 +188,6 @@ resources:
     properties:
       hdi-container-name: '${service-name}'
     type: com.sap.xs.hdi-container
-  - name: cv19-tracing-uaa
-    parameters:
-      service-name: cv19-tracing-uaa
-      service: xsuaa
-      service-plan: application
-      path: ./xs-security.json
   - name: application-log-srv
     type: org.cloudfoundry.managed-service
     parameters:
@@ -135,7 +195,7 @@ resources:
       service-plan: lite
   - name: uaa_covid19-contact-tracing-be
     parameters:
-      path: ./xs-security.json
+      path: ./xs-security-uaa.json
       service-plan: application
       service: xsuaa
     type: org.cloudfoundry.managed-service
@@ -143,4 +203,14 @@ resources:
     parameters:
       service-plan: standard
       service: portal
+    type: org.cloudfoundry.managed-service
+  - name: dest_covid19-contact-tracing-be
+    parameters:
+      service-plan: lite
+      service: destination
+    type: org.cloudfoundry.managed-service
+  - name: workflow_covid19-contact-tracing-be
+    parameters:
+      service-plan: standard
+      service: workflow
     type: org.cloudfoundry.managed-service

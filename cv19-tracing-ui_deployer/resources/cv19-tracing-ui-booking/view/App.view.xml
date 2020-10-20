@@ -1,0 +1,9 @@
+ <mvc:View controllerName="covid19.ui.booking.cv19-tracing-ui-booking.controller.App"
+  displayBlock="true"
+  xmlns="sap.m"
+  xmlns:mvc="sap.ui.core.mvc">
+  <App 
+    id="idAppControl"
+    busyIndicatorDelay="0"
+    busy="{/busy}" />
+</mvc:View>

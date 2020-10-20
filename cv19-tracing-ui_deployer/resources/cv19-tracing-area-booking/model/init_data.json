@@ -1,0 +1,43 @@
+{
+	"layout": "OneColumn",
+	"busy": false,
+
+	"calendarStartDate": null,
+	"calendarEndDate": null,
+  
+	"user": {
+	  "id": "john.doe@sap.com",
+	  "name": { "givenName": "John", "familyName": "Doe" },
+	  "emails": [{ "value": "john.doe@sap.com" }]
+	},
+
+	"newBooking": {
+		"AreaID": null,
+		"DateStart": null,
+		"DateEnd": null,
+		"Notes": "",
+		"timeframe": "wholeDay"
+	},
+
+	"wfInitData": {
+		"definitionId": "cv19approvalwf",
+		"context": {
+			"u": {
+				"aN": "",
+				"aM": "",
+				"e": "",
+				"n": ""
+			},
+			"r": {
+				"i": -1,
+				"s": "",
+				"sd": "",
+				"ed": "",
+				"p": "",
+				"n": ""
+			},
+			"originalTask": {}
+		}
+	}
+	
+}

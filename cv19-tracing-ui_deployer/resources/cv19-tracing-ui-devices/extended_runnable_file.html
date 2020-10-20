@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html style="height: 100%;">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale = 1.0, user-scalable = no">
+		<title>Presales Engagement Requests Management</title>
+		<script id="sap-ui-bootstrap" src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js" data-sap-ui-theme="sap_fiori_3" data-sap-ui-libs="sap.m" data-sap-ui-bindingsyntax="complex" data-sap-ui-compatversion="edge" data-sap-ui-async="true" data-sap-ui-resourceroots="{
+					&quot;covid19.ui.devicesmanagement.cv19-tracing-ui-devices&quot;: &quot;./&quot;
+				}" data-sap-ui-flexibilityservices="[{&quot;applyConnector&quot;:&quot;PreviewConnector&quot;,&quot;custom&quot;:true,&quot;layers&quot;:[&quot;VENDOR&quot;]}]">
+		</script>
+	<script src="../changes_preview.js"></script>
+
+	<script>(function(){document.addEventListener('load', function(event){
+        	var element = event.target;
+            if( element.id === "OpaFrame"){
+               var opaFrameElementDocument = document.getElementById("OpaFrame").contentWindow.document;
+               var scriptObject = opaFrameElementDocument.createElement("script");
+               scriptObject.type = "text/javascript";
+               scriptObject.innerHTML = "sap.ui.getCore().loadLibrary('sap.ui.fl'); jQuery.getScript('../changes_preview.js')";
+               opaFrameElementDocument.head.appendChild(scriptObject);
+            }
+          },true);})()</script>
+
+
+		<script>
+			sap.ui.getCore().attachInit(function () {
+				sap.ui.require([
+					"sap/ui/core/ComponentContainer"
+				], function (ComponentContainer) {
+
+					new ComponentContainer({
+						name : 'covid19.ui.devicesmanagement.cv19-tracing-ui-devices',
+						height : "100%",
+						settings : {
+							id : "covid19.ui.devicesmanagement.cv19-tracing-ui-devices"
+						}
+					}).placeAt('content');
+				});
+			});
+		</script>
+
+	</head>
+	<body class="sapUiBody sapUiSizeCompact" id="content">
+	</body>
+</html>

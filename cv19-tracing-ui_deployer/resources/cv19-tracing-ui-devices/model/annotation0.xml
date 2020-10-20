@@ -55,6 +55,11 @@
 							<PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#GeneralInfoFG"/>
 							<PropertyValue Property="Label" String="{@i18n&gt;GENERAL_INFO}"/>
 						</Record>
+						<Record Type="UI.ReferenceFacet">
+							<PropertyValue Property="Target" AnnotationPath="toTags/@UI.LineItem#TagsList"/>
+							<PropertyValue Property="ID" String="DeviceTagsFacet"/>
+							<PropertyValue Property="Label" String="{@i18n&gt;DEVICE'S_TAGS}"/>
+						</Record>
 					</Collection>
 				</Annotation>
 				<Annotation Term="UI.HeaderInfo">
@@ -131,6 +136,24 @@
 							</Collection>
 						</PropertyValue>
 					</Record>
+				</Annotation>
+			</Annotations>
+			<Annotations Target="Metadata.DeviceTagSetType">
+				<Annotation Term="UI.HeaderInfo">
+					<Record Type="UI.HeaderInfoType">
+						<PropertyValue Property="TypeName" String="{@i18n&gt;DEVICE'S_TAG}"/>
+						<PropertyValue Property="TypeNamePlural" String="{@i18n&gt;DEVICE'S_TAGS}"/>
+					</Record>
+				</Annotation>
+				<Annotation Term="UI.LineItem" Qualifier="TagsList">
+					<Collection>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="DeviceID"/>
+						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" Path="TagKey"/>
+						</Record>
+					</Collection>
 				</Annotation>
 			</Annotations>
 		</Schema>

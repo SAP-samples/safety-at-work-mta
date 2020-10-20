@@ -1,0 +1,114 @@
+{
+    "resources": [
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/i18n/i18n_en.properties",
+            "raw": "i18n/i18n.properties",
+            "locale": "_en"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/util/formatter.js"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/xs-app.json"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/manifest.json"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/util/lodash.js"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/model/init_data.json"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/model/models.js"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/controller/New.controller.js"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/controller/Main.controller.js"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/controller/BaseController.js"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/Component.js"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/manifest-bundle.zip"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/Component-preload.js",
+            "merged": true
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/util/lodash-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/util/formatter-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/model/models-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/controller/New-dbg.controller.js",
+            "isDebug": true
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/controller/Main-dbg.controller.js",
+            "isDebug": true
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/controller/BaseController-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/Component-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "../../sap-ui-version.json"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/view/fragment/Main/F0_ReservationMenuActionSheet.fragment.xml"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/resources/img/favicon.ico"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/view/New.view.xml"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/view/Main.view.xml"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/view/App.view.xml"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/i18n/i18n.properties",
+            "raw": "i18n/i18n.properties"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/css/style.css"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/css/new_normal.jpg"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/index.html"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/fioriHtmlRunner.html"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/extended_runnable_file.html"
+        },
+        {
+            "name": "../../cv19/tracing/area/booking/cv19-tracing-area-booking/.DS_Store"
+        }
+    ]
+}

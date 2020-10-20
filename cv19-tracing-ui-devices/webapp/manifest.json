@@ -12,7 +12,7 @@
 		"resources": "resources.json",
 		"dataSources": {
 			"mainService": {
-				"uri": "/cf_cv19contacttracing_anon/odata/services.xsodata/",
+				"uri": "./cf_cv19contacttracing_anon/odata/services.xsodata/",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
@@ -43,7 +43,10 @@
 					"action": "display",
 					"title": "Devices",
 					"subTitle": "Manage beacons master data",
-					"icon": "sap-icon://it-system"
+					"icon": "sap-icon://it-system",
+					"indicatorDataSource": {
+						"dataSource": "mainService"
+					}
 				}
 			}
 		}
@@ -82,7 +85,36 @@
 			"components": {}
 		},
 		"extends": {
-			"extensions": {}
+			"extensions": {
+				"sap.ui.viewExtensions": {
+					"sap.suite.ui.generic.template.ObjectPage.view.Details": {
+						"ReplaceFacet|DeviceSet|DeviceTagsFacet": {
+							"type": "XML",
+							"className": "sap.ui.core.mvc.View",
+							"viewName": "covid19.ui.devicesmanagement.cv19-tracing-ui-devices.ext.view.DeviceTags"
+						}
+					}
+				},
+				"sap.ui.controllerExtensions": {
+					"sap.suite.ui.generic.template.ObjectPage.view.Details": {
+						"controllerName": "covid19.ui.devicesmanagement.cv19-tracing-ui-devices.ext.controller.ObjectPageExt",
+						"sap.ui.generic.app": {
+							"DeviceSet": {
+								"EntitySet": "DeviceSet",
+								"Header": {
+									"Actions": {
+										"ActionDeviceSetHeader1": {
+											"id": "ActionDeviceSetHeader1button",
+											"text": "{@i18n>ActionDeviceSetHeader1}",
+											"press": "onClickActionDeviceSetHeader1"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		},
 		"contentDensities": {
 			"compact": true,
@@ -131,7 +163,7 @@
 			},
 			"forceGlobalRefresh": false,
 			"objectPageHeaderType": "Dynamic",
-			"showDraftToggle": false
+			"showDraftToggle": true
 		},
 		"pages": {
 			"ListReport|DeviceSet": {
@@ -157,5 +189,8 @@
 	},
 	"sap.platform.hcp": {
 		"uri": ""
+	},
+	"sap.platform.cf": {
+		"oAuthScopes": ["$XSAPPNAME.ADMIN"]
 	}
 }

@@ -1,0 +1,1 @@
+sap.ui.define(["sap/ui/test/Opa5"],function(t){"use strict";return t.extend("covid19.ui.booking.cv19-tracing-ui-booking.test.integration.arrangements.Startup",{iStartMyApp:function(){this.iStartMyUIComponent({componentConfig:{name:"covid19.ui.booking.cv19-tracing-ui-booking",async:true,manifest:true}})}})});

@@ -1,0 +1,7 @@
+VIEW "demo.sap.presales.covid19.model::covid19.V_DEVICEAREA"
+AS 
+SELECT  
+	"DeviceID",
+	"Description"
+from "demo.sap.presales.covid19.model::covid19.Device" as "D"
+where UPPER("Type") = 'AREA';

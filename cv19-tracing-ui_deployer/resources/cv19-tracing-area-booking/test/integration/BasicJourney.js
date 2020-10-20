@@ -1,0 +1,1 @@
+sap.ui.define(["sap/ui/test/opaQunit","cv19/tracing/area/booking/cv19-tracing-area-booking/test/integration/pages/App"],function(e){"use strict";e("should show correct number of nested pages",function(e,t,n){e.iStartMyApp();n.onTheAppPage.iShouldSeePageCount(1);n.iTeardownMyApp()})});

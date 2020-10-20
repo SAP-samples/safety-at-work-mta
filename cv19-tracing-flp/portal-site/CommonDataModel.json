@@ -51,6 +51,48 @@
 					"vizId": "DeviceDashboard-display"
 				}]
 			}
+		}, {
+			"_version": "3.0.0",
+			"identification": {
+				"id": "bookings",
+				"title": "{{title}}",
+				"entityType": "group",
+				"i18n": "i18n/bookings.properties"
+			},
+			"payload": {
+				"viz": [{
+					"id": "covid19.ui.booking.cv19-tracing-ui-booking-0-1601321643956",
+					"appId": "covid19.ui.booking.cv19-tracing-ui-booking",
+					"vizId": "RoomBooking-display"
+				}, {
+					"id": "cv19.tracing.area.booking.cv19-tracing-area-booking-1-1601321643956",
+					"appId": "cv19.tracing.area.booking.cv19-tracing-area-booking",
+					"vizId": "areaBooking-display"
+				}]
+			}
+		}, {
+			"_version": "3.0.0",
+			"identification": {
+				"id": "approval",
+				"title": "{{title}}",
+				"entityType": "group",
+				"i18n": "i18n/approval.properties"
+			},
+			"payload": {
+				"viz": [{
+					"id": "com.sap.bpm.monitorworkflow-0-1601558196447",
+					"appId": "com.sap.bpm.monitorworkflow",
+					"vizId": "bpmworkflowmonitor-DisplayInstances"
+				}, {
+					"id": "com.sap.bpm.monitorworkflow-1-1601558196447",
+					"appId": "com.sap.bpm.monitorworkflow",
+					"vizId": "bpmworkflowmonitor-DisplayDefinitions"
+				}, {
+					"id": "cross.fnd.fiori.inbox-2-1601558196447",
+					"appId": "cross.fnd.fiori.inbox",
+					"vizId": "WorkflowTask-DisplayMyInbox"
+				}]
+			}
 		}],
 		"sites": [{
 			"_version": "3.0.0",
@@ -76,7 +118,7 @@
 						}
 					}
 				},
-				"groupsOrder": ["defaultGroupId", "monitor"],
+				"groupsOrder": ["defaultGroupId", "monitor", "bookings", "approval"],
 				"sap.cloud.portal": {
 					"config": {
 						"theme.id": "sap_fiori_3",

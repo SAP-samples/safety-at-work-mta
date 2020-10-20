@@ -1,6 +1,13 @@
 {
     "resources": [
         {
+            "name": "i18n/ListReport/DeviceSet/i18n.properties",
+            "raw": "i18n/i18n.properties"
+        },
+        {
+            "name": "CopyOfmanifest.json"
+        },
+        {
             "name": "i18n/i18n.properties",
             "raw": "i18n/i18n.properties"
         },
@@ -8,17 +15,16 @@
             "name": "manifest.json"
         },
         {
+            "name": "ext/controller/DeviceTags.controller.js"
+        },
+        {
+            "name": "localService/mockserver.js"
+        },
+        {
             "name": "model/models.js"
         },
         {
             "name": "model/formatter.js"
-        },
-        {
-            "name": "i18n/ListReport/DeviceSet/i18n.properties",
-            "raw": "i18n/i18n.properties"
-        },
-        {
-            "name": "localService/mockserver.js"
         },
         {
             "name": "controller/NotFound.controller.js"
@@ -58,6 +64,14 @@
             "merged": true
         },
         {
+            "name": "controller/ListSelector-dbg.js",
+            "isDebug": true
+        },
+        {
+            "name": "ext/controller/DeviceTags-dbg.controller.js",
+            "isDebug": true
+        },
+        {
             "name": "model/models-dbg.js",
             "isDebug": true
         },
@@ -75,10 +89,6 @@
         },
         {
             "name": "controller/Master-dbg.controller.js",
-            "isDebug": true
-        },
-        {
-            "name": "controller/ListSelector-dbg.js",
             "isDebug": true
         },
         {
@@ -113,6 +123,12 @@
             "name": "../../../../sap-ui-version.json"
         },
         {
+            "name": "ext/view/DeviceTags.view.xml"
+        },
+        {
+            "name": "ext/fragment/TagDialog.fragment.xml"
+        },
+        {
             "name": "view/ViewSettingsDialog.fragment.xml"
         },
         {
@@ -141,6 +157,12 @@
         },
         {
             "name": "index.html"
+        },
+        {
+            "name": "fioriHtmlRunner.html"
+        },
+        {
+            "name": "extended_runnable_file.html"
         },
         {
             "name": "Component.js.orig"

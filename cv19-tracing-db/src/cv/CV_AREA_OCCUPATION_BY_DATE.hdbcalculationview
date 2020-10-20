@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="demo.sap.presales.covid19.cv::CV_AREA_OCCUPATION_BY_DATE" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" outputViewType="Aggregation" cacheInvalidationPeriod="NONE" enforceSqlExecution="false">
+<descriptions defaultDescription="CV_AREA_OCCUPATION_BY_DATE"/>
+<localVariables>
+  <variable id="StartDate" parameter="true">
+    <descriptions defaultDescription="Start Date"/>
+    <variableProperties datatype="DATE" mandatory="true">
+      <valueDomain type="Date"/>
+      <selection multiLine="false" type="SingleValue"/>
+    </variableProperties>
+  </variable>
+  <variable id="EndDate" parameter="true">
+    <descriptions defaultDescription="End Date"/>
+    <variableProperties datatype="DATE" mandatory="true">
+      <valueDomain type="Date"/>
+      <selection multiLine="false" type="SingleValue"/>
+    </variableProperties>
+  </variable>
+  <variable id="AreaId" parameter="true">
+    <descriptions defaultDescription=""/>
+    <variableProperties datatype="NVARCHAR" length="100" mandatory="true">
+      <valueDomain type="empty"/>
+      <selection multiLine="false" type="SingleValue"/>
+    </variableProperties>
+  </variable>
+</localVariables>
+<variableMappings/>
+<dataSources>
+  <DataSource id="demo.sap.presales.covid19.model::covid19.Reservation">
+    <resourceUri>demo.sap.presales.covid19.model::covid19.Reservation</resourceUri>
+  </DataSource>
+  <DataSource id="demo.sap.presales.covid19.model::covid19.Device">
+    <resourceUri>demo.sap.presales.covid19.model::covid19.Device</resourceUri>
+  </DataSource>
+</dataSources>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1" filterExpressionLanguage="SQL">
+    <viewAttributes>
+      <viewAttribute id="DateStart"/>
+      <viewAttribute id="DateEnd"/>
+      <viewAttribute id="PartecipantsNumber"/>
+      <viewAttribute id="RoomID"/>
+      <viewAttribute id="ApprovalStatus"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="demo.sap.presales.covid19.model::covid19.Reservation"/>
+    <filter>&quot;DateStart&quot; &gt;= '$$StartDate$$' and &quot;DateEnd&quot; &lt;= '$$EndDate$$' and &quot;ApprovalStatus&quot; &lt;&gt; 2 and &quot;RoomID&quot; = '$$AreaId$$'</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="CN_N" joinType="inner" filterExpressionLanguage="SQL">
+    <viewAttributes>
+      <viewAttribute id="DateStart" aggregationType="min"/>
+      <viewAttribute id="PartecipantsNumber" aggregationType="sum"/>
+      <viewAttribute id="Type"/>
+      <viewAttribute hidden="true" id="JOIN$RoomID$DeviceID"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="CalendarDate" datatype="DATE" expressionLanguage="SQL">
+        <formula>TO_DATE(EXTRACT_YEAR(&quot;DateStart&quot;) || '-' || EXTRACT_MONTH(&quot;DateStart&quot;) || '-' || EXTRACT_DAY(&quot;DateStart&quot;), 'YYYY-MM-DD')</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="Projection_1">
+      <mapping xsi:type="Calculation:AttributeMapping" target="DateStart" source="DateStart"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PartecipantsNumber" source="PartecipantsNumber"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$RoomID$DeviceID" source="RoomID"/>
+    </input>
+    <input node="demo.sap.presales.covid19.model::covid19.Device">
+      <mapping xsi:type="Calculation:AttributeMapping" target="Type" source="Type"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$RoomID$DeviceID" source="DeviceID"/>
+    </input>
+    <filter>&quot;Type&quot; = 'AREA'</filter>
+    <joinAttribute name="JOIN$RoomID$DeviceID"/>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Join_1">
+  <attributes>
+    <attribute id="startDate" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="Calendar Date"/>
+      <keyMapping columnObjectName="Join_1" columnName="CalendarDate"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="capacity" order="1" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="Capacity"/>
+      <measureMapping columnObjectName="Join_1" columnName="PartecipantsNumber"/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="92" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="357"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Projection_1" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="186"/>
+    </shape>
+    <shape modelObjectName="demo.sap.presales.covid19.model::covid19.Device" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="353"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

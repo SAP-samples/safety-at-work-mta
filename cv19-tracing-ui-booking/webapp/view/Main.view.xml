@@ -1,0 +1,110 @@
+<mvc:View
+	controllerName="covid19.ui.booking.cv19-tracing-ui-booking.controller.Main"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:unified="sap.ui.unified"
+	xmlns="sap.m">
+	<Page
+		showFooter="false"
+		showHeader="true">
+		<customHeader>
+			<OverflowToolbar>
+				<Title 
+					class="notSoSmallTitle"
+					text="{i18n>roomBookerTitle}" 
+					titleStyle="H4">
+					<layoutData>
+						<OverflowToolbarLayoutData 
+							priority="NeverOverflow"/>
+					</layoutData>
+				</Title>
+				<ToolbarSpacer />
+				<SearchField 
+					placeholder="{i18n>searchSomethingInRoomBookerCalendar}"
+					value="{/roomBookerSearchString}"
+					search="onPlanningCalendarSearch">
+					<layoutData>
+						<OverflowToolbarLayoutData 
+							group="1"
+							maxWidth="60%"
+							priority="Low"/>
+					</layoutData>
+				</SearchField>
+				<ToolbarSpacer />
+				<Button 
+					id="addButton" 
+					type="Ghost"
+					icon="sap-icon://add" 
+					text="{i18n>newReservation}"
+					press="onAddNewReservationButtonPress" 
+					tooltip="{i18n>addNewReservation}">
+					<layoutData>
+						<OverflowToolbarLayoutData 
+							group="2"
+							priority="High"/>
+					</layoutData>
+				</Button>
+			</OverflowToolbar>
+		</customHeader>
+		<PlanningCalendar
+				id="RoomBookerPlanningCalendar"
+				stickyHeader="true"
+				viewKey="A"
+				rows="{
+					path: '/rooms',
+					filters: [
+						{path: 'Type', operator:'EQ', value1: 'BEACON'}
+					],
+					sorter: {
+						path: 'Description',
+						descending: false
+					}
+				}"
+				appointmentsVisualization="Filled"
+				appointmentSelect="onReservationSelect"
+				showEmptyIntervalHeaders="false"
+				intervalSelect="onCalendarIntervalSelect"
+				startDateChange="onCalendarStartDateChange">
+			<views>
+				<PlanningCalendarView
+					key="A"
+					intervalType="Hour"
+					description="hours view"
+					intervalsS="2"
+					intervalsM="8"
+					intervalsL="8"
+					showSubIntervals="false"/>
+			</views>
+			<rows>
+				<PlanningCalendarRow
+						icon="{
+							path: 'Type',
+							formatter: '.formatter.formatCalendarRowIconByType'
+						}"
+						title="{Description}"
+						text="{i18n>maxCapacity}: {Capacity}"
+						appointments="{
+							path : 'reservations', 
+							templateShareable: true
+						}">
+					<appointments>
+						<unified:CalendarAppointment
+								startDate="{DateStart}"
+								endDate="{DateEnd}"
+								icon="{
+									path: 'ApprovalStatus',
+									formatter: '.formatter.calendarAppointmentIconByApprovalStatus'
+								}"
+								title="{Subject}"
+								text="{i18n>participants}: {PartecipantsNumber}"
+								type="{
+									path: 'ApprovalStatus',
+									formatter: '.formatter.calendarAppointmentTypeByApprovalStatus'
+								}"
+								tentative="{= ${ApprovalStatus} === 'Pending' }">
+						</unified:CalendarAppointment>
+					</appointments>
+				</PlanningCalendarRow>
+			</rows>
+		</PlanningCalendar>
+	</Page>
+</mvc:View>

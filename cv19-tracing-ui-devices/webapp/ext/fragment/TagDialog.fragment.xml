@@ -1,0 +1,22 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		noDataText="{i18n>SelectTagDiagNoItems}"
+		title="{i18n>SelectTagTit}"
+		search=".onSearch"
+		multiSelect="false"
+		confirm=".onDialogConfirm"
+		cancel=".onDialogClose"
+		items="{
+			path: '/TagSet',
+			sorter: {
+				path:'Value'
+			}
+		}">
+		<StandardListItem
+			title="{Value}"
+			description="{Type}"
+			type="Active" />
+	</SelectDialog>
+</core:FragmentDefinition>

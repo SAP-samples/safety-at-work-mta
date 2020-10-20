@@ -12,7 +12,7 @@
        "data_type" : "CSV", 
        "file_name" : "demo.sap.presales.covid19.model.csv::Tags.csv", 
        "has_header" : true,
-       "no_data_import": false,
+       "no_data_import": true,
        "delete_existing_foreign_data": false,
        "dialect"   : "HANA",  
        "type_config" : { 

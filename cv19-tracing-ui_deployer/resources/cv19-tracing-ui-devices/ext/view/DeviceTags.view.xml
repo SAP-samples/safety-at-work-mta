@@ -1,0 +1,41 @@
+<mvc:View controllerName="covid19.ui.devicesmanagement.cv19-tracing-ui-devices.ext.controller.DeviceTags" xmlns:mvc="sap.ui.core.mvc" xmlns:commons="sap.ui.commons" xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form" xmlns:l="sap.ui.layout"
+	xmlns:sfi="sap.ui.comp.smartfield" xmlns:sfo="sap.ui.comp.smartform" xmlns:table="sap.ui.table"
+	xmlns:template="http://schemas.sap.com/sapui5/extension/sap.ui.core.template/1" xmlns:uxap="sap.uxap" xmlns="sap.m">
+	<Table id="idTagsTable"
+		inset="false"
+		mode="Delete"
+		delete="handleDelete"
+		items="{
+			path: 'toTags',
+			parameters:{
+				expand: 'toTag'
+			}
+		}">
+		<headerToolbar>
+			<OverflowToolbar>
+				<content>
+					<ToolbarSpacer />
+					<Button icon="sap-icon://add" press="handleAddTag" type="Emphasized"></Button>
+				</content>
+			</OverflowToolbar>
+		</headerToolbar>
+		<columns>
+			<Column>
+				<Text text="{i18n>TAG_TYPE}" />
+			</Column>
+			<Column>
+				<Text text="{i18n>TAG_VALUE}" />
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem>
+				<cells>
+					<Text
+						text="{toTag/Type}" />
+					<Text
+						text="{toTag/Value}" />
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+</mvc:View>

@@ -1,0 +1,1 @@
+sap.ui.define(["sap/ui/core/UIComponent","sap/ui/Device","covid19/ui/booking/cv19-tracing-ui-booking/model/models"],function(i,e,o){"use strict";return i.extend("covid19.ui.booking.cv19-tracing-ui-booking.Component",{metadata:{manifest:"json"},init:function(){i.prototype.init.apply(this,arguments);this.getRouter().initialize();this.setModel(o.createDeviceModel(),"device")}})});

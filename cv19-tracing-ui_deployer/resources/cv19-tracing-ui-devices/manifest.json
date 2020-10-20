@@ -86,7 +86,17 @@
             "components": {}
         },
         "extends": {
-            "extensions": {}
+            "extensions": {
+                "sap.ui.viewExtensions": {
+                    "sap.suite.ui.generic.template.ObjectPage.view.Details": {
+                        "ReplaceFacet|DeviceSet|DeviceTagsFacet": {
+                            "type": "XML",
+                            "className": "sap.ui.core.mvc.View",
+                            "viewName": "covid19.ui.devicesmanagement.cv19-tracing-ui-devices.ext.view.DeviceTags"
+                        }
+                    }
+                }
+            }
         },
         "contentDensities": {
             "compact": true,
@@ -135,7 +145,7 @@
             },
             "forceGlobalRefresh": false,
             "objectPageHeaderType": "Dynamic",
-            "showDraftToggle": false
+            "showDraftToggle": true
         },
         "pages": {
             "ListReport|DeviceSet": {
@@ -161,5 +171,10 @@
     },
     "sap.platform.hcp": {
         "uri": ""
+    },
+    "sap.platform.cf": {
+        "oAuthScopes": [
+            "$XSAPPNAME.ADMIN"
+        ]
     }
 }

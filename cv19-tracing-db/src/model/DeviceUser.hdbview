@@ -4,4 +4,4 @@ SELECT
 	"DeviceID",
 	"Description"
 from "demo.sap.presales.covid19.model::covid19.Device" as "D"
-where "Type" = 'USER';
+where UPPER("Type") = 'USER';

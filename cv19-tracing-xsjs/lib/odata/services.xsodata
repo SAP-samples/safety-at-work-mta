@@ -1,10 +1,10 @@
 service  {
 	"demo.sap.presales.covid19.model::covid19.Device" as "DeviceSet" 
-		navigates ("Device_Owner" as "ownedBy", "Device_EphemeralID" as "toEIDs", "Device_Infected" as "toInfections", "Device_Tags" as "toTags")
+		navigates ("Device_Owner" as "ownedBy", "Device_EphemeralID" as "toEIDs", "Device_Infected" as "toInfections", "Device_Tags" as "toTags", "Device_Reservations" as "toReservations")
 		update using "common.libs:odataExits.xsjslib::device_update"
 		create using "common.libs:odataExits.xsjslib::device_create"
 		delete using "common.libs:odataExits.xsjslib::device_delete";
-	"demo.sap.presales.covid19.model::covid19.Device_Tag" as "DeviceTagSet";
+	"demo.sap.presales.covid19.model::covid19.Device_Tag" as "DeviceTagSet" navigates ("DeviceTag_Tags" as "toTag");
 	
 	
 	"demo.sap.presales.covid19.model::covid19.EphemeralID" as "EphemeralIDSet" navigates ("EphemeralID_Device" as "toDevice");
@@ -12,15 +12,25 @@ service  {
 	"demo.sap.presales.covid19.model::covid19.Event" as "EventSet";
 		
 	"demo.sap.presales.covid19.model::covid19.Infected" as "InfectedSet" navigates ("Infected_Device" as "toDevice", "Infected_EphemeralIDInfected" as "toInfectedEIDs")
-		create using "common.libs:odataExits.xsjslib::infected_create";
+		create using "common.libs:odataExits.xsjslib::infected_create"
+		delete forbidden;
 		
 	"demo.sap.presales.covid19.model::covid19.EphemeralIDInfected" as "EphemeralIDInfectedSet" navigates ("Infected_ProximityDetected" as "toPotentialInfectedEIDs");
 	"demo.sap.presales.covid19.model::covid19.ProximityDetected" as "ProximityDetectedSet" navigates ("ProximityDetected_EphemeralID" as "toPotentialInfectedEID");
 	"demo.sap.presales.covid19.model::covid19.Tag" as "TagSet";
+	
     "demo.sap.presales.covid19.cv::CV_MONITOR_REALTIME" as "RealTimeRoomStatus" keys( "DeviceID") navigates ("RaltimeStatus_Tags" as "toTags")  parameters via key and entity;
     "demo.sap.presales.covid19.cv::CV_HISTORY_MONITOR" as "HistoryDevicesStatus" key generate local "GenID" parameters via entity;
+    "demo.sap.presales.covid19.cv::CV_AREA_OCCUPATION_BY_DATE" as "OccupationByDate" key generate local "GenID" parameters via entity;
     
     "demo.sap.presales.covid19.model::covid19.V_DEVICEUSER" as "DeviceUserViewSet" keys( "DeviceID");
+    "demo.sap.presales.covid19.model::covid19.V_DEVICEROOMAREA" as "RoomAreaSet" keys( "DeviceID");
+    "demo.sap.presales.covid19.model::covid19.V_DEVICEROOM" as "RoomSet" keys( "DeviceID");
+    "demo.sap.presales.covid19.model::covid19.V_DEVICEAREA" as "AreaSet" keys( "DeviceID");
+    "demo.sap.presales.covid19.model::covid19.V_DEVICERESERVATION" as "RoomReservationSet" keys( "DeviceID", "ReservationID");
+    
+    "demo.sap.presales.covid19.model::covid19.Reservation" as "ReservationSet" navigates ("Reservation_Room" as "toRoom", "Reservation_Employee" as "toEmployee");
+    
     /*
     Associations
     */
@@ -94,6 +104,37 @@ service  {
 	multiplicity "1"
 	dependent "EphemeralIDSet"("EID")
 	multiplicity "1";
+	
+	/*navigates to the room reserved*/
+	association "Reservation_Room"
+	principal "ReservationSet"("RoomID")
+	multiplicity "1"
+	dependent "DeviceSet"("DeviceID")
+	multiplicity "1";
+	
+	/*navigates to the room reserved*/
+	association "Reservation_Employee"
+	principal "ReservationSet"("EmployeeID")
+	multiplicity "1"
+	dependent "DeviceSet"("DeviceID")
+	multiplicity "1";
+	
+	
+	/*navigates to corresponding tag*/
+	association "DeviceTag_Tags"
+	principal "DeviceTagSet"("TagKey")
+	multiplicity "1"
+	dependent "TagSet"("Key")
+	multiplicity "1";
+	
+	
+	/*navigates to the room reserved*/
+	association "Device_Reservations"
+	principal "DeviceSet"("DeviceID")
+	multiplicity "1"
+	dependent "ReservationSet"("RoomID")
+	multiplicity "*";
+	
 	
 }
 

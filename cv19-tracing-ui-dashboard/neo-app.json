@@ -34,6 +34,22 @@
         "name": "cf_cv19contacttracing_anon"
       },
       "description": "cf_cv19contacttracing_anon"
+    },
+    {
+      "path": "/service_api",
+      "target": {
+        "type": "destination",
+        "name": "cf_cv19contacttracing_anon"
+      },
+      "description": "cf_cv19contacttracing_anon"
+    },
+    {
+      "path": "/js_api",
+      "target": {
+        "type": "destination",
+        "name": "cf_cv19contacttracing_anon"
+      },
+      "description": "cf_cv19contacttracing_anon"
     }
   ],
   "sendWelcomeFileRedirect": true

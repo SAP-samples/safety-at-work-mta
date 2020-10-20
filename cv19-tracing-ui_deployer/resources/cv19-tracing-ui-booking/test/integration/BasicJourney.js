@@ -1,0 +1,1 @@
+sap.ui.define(["sap/ui/test/opaQunit","covid19/ui/booking/cv19-tracing-ui-booking/test/integration/pages/App"],function(e){"use strict";e("should show correct number of nested pages",function(e,i,o){e.iStartMyApp();o.onTheAppPage.iShouldSeePageCount(1);o.iTeardownMyApp()})});

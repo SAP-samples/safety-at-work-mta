@@ -1,0 +1,40 @@
+{
+  "welcomeFile": "/webapp/index.html",
+  "routes": [
+    {
+      "path": "/resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/resources"
+      },
+      "description": "SAPUI5 Resources"
+    },
+    {
+      "path": "/test-resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/test-resources"
+      },
+      "description": "SAPUI5 Test Resources"
+    },
+    {
+      "path": "/service_api",
+      "target": {
+        "type": "destination",
+        "name": "cf_cv19contacttracing_anon_dev"
+      },
+      "description": "cf_cv19contacttracing_anon_dev"
+    },
+    {
+      "path": "/js_api",
+      "target": {
+        "type": "destination",
+        "name": "cf_cv19contacttracing_anon_dev"
+      },
+      "description": "cf_cv19contacttracing_anon_dev"
+    }
+  ],
+  "sendWelcomeFileRedirect": true
+}

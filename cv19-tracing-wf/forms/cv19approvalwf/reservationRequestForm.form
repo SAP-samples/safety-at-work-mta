@@ -1,0 +1,88 @@
+{
+    "id": "reservationrequestform",
+    "schemaVersion": "1.0.0",
+    "name": "reservationRequestForm",
+    "revision": "1.0",
+    "type": "task",
+    "readOnly": false,
+    "content": [
+        {
+            "id": "requestor",
+            "type": "string",
+            "label": "Requestor",
+            "readOnly": true,
+            "value": "${context.u.n}",
+            "constraints": {
+                "required": false
+            }
+        },
+        {
+            "id": "subject",
+            "type": "string",
+            "label": "Subject",
+            "readOnly": true,
+            "value": "${context.r.s}",
+            "constraints": {
+                "required": false
+            }
+        },
+        {
+            "id": "start_date",
+            "type": "string",
+            "label": "Start Date",
+            "readOnly": true,
+            "value": "${context.r.sd}",
+            "constraints": {
+                "required": false
+            }
+        },
+        {
+            "id": "end_date",
+            "type": "string",
+            "label": "End Date",
+            "readOnly": true,
+            "value": "${context.r.ed}",
+            "constraints": {
+                "required": false
+            }
+        },
+        {
+            "id": "nr_participants",
+            "type": "string",
+            "label": "Nr. participants",
+            "readOnly": true,
+            "value": "${context.r.p}",
+            "constraints": {
+                "required": false
+            }
+        },
+        {
+            "id": "notes",
+            "type": "string",
+            "label": "Notes",
+            "readOnly": true,
+            "value": "${context.r.n}",
+            "control": {
+                "type": "TextArea",
+                "properties": {
+                    "height": "medium"
+                }
+            },
+            "constraints": {
+                "required": false
+            }
+        }
+    ],
+    "decisions": [
+        {
+            "id": "approve",
+            "text": "Approve",
+            "decisionType": "positive"
+        },
+        {
+            "id": "reject",
+            "text": "Reject",
+            "decisionType": "negative"
+        }
+    ]
+}

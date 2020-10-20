@@ -1,8 +1,8 @@
 {
     "resources": [
         {
-            "name": "Component-preload.js",
-            "merged": true
+            "name": "util/chartsData-dbg.js",
+            "isDebug": true
         },
         {
             "name": "manifest.json"
@@ -32,16 +32,20 @@
             "name": "manifest-bundle.zip"
         },
         {
-            "name": "i18n/i18n.properties",
-            "raw": "i18n/i18n.properties"
+            "name": "Component-preload.js",
+            "merged": true
+        },
+        {
+            "name": "Component-dbg.js",
+            "isDebug": true
         },
         {
             "name": "util/formatter-dbg.js",
             "isDebug": true
         },
         {
-            "name": "util/chartsData-dbg.js",
-            "isDebug": true
+            "name": "i18n/i18n.properties",
+            "raw": "i18n/i18n.properties"
         },
         {
             "name": "model/models-dbg.js",
@@ -53,10 +57,6 @@
         },
         {
             "name": "controller/BaseController-dbg.js",
-            "isDebug": true
-        },
-        {
-            "name": "Component-dbg.js",
             "isDebug": true
         },
         {

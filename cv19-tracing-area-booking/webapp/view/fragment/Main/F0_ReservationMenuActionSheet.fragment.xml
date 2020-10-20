@@ -1,0 +1,14 @@
+<core:FragmentDefinition 
+	xmlns="sap.m" 
+	xmlns:l="sap.ui.layout" 
+	xmlns:core="sap.ui.core">
+	<ActionSheet id="actionSheet"
+		title="{i18n>reservationMenuActionSheetTitle}"
+		showCancelButton="true"
+		placement="Auto">
+		<Button
+			text="{i18n>deleteBooking}"
+			icon="sap-icon://delete"
+			press="onDeleteBookingMenuItemPress" />
+	</ActionSheet>
+</core:FragmentDefinition>

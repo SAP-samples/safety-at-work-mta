@@ -1,0 +1,146 @@
+ID: covid19-contact-tracing-be
+_schema-version: '2.1'
+parameters:
+  deploy_mode: html5-repo
+version: 1.0.1
+modules:
+  - name: cv19-tracing-approuter
+    type: approuter.nodejs
+    path: cv19-tracing-approuter
+    parameters:
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: cv19-tracing-html5_repo_runtime
+      - name: uaa_covid19-contact-tracing-be
+      - name: cv19-tracing-xsjs_api
+        properties:
+          url: '~{url}'
+          name: service_api
+          forwardAuthToken: true
+        group: destinations
+      - name: cv19-tracing-uaa
+      - name: portal_resources_cv19-tracing
+  - name: cv19-tracing-ui_deployer
+    type: com.sap.html5.application-content
+    path: cv19-tracing-ui_deployer
+    requires:
+      - name: cv19-tracing-html5_repo_host
+    build-parameters:
+      requires:
+        - name: cv19-tracing-ui-devices
+          artifacts:
+            - './*'
+          target-path: resources/cv19-tracing-ui-devices
+        - name: cv19-tracing-ui-infected
+          artifacts:
+            - './*'
+          target-path: resources/cv19-tracing-ui-infected
+        - name: cv19-tracing-ui-dashboard
+          artifacts:
+            - './*'
+          target-path: resources/cv19-tracing-ui-dashboard
+  - name: cv19-tracing-db
+    type: hdb
+    path: cv19-tracing-db
+    requires:
+      - name: hdi_cv19-tracing-db
+  - name: cv19-tracing-xsjs
+    type: nodejs
+    path: cv19-tracing-xsjs
+    parameters:
+      disk-quota: 1024M
+      memory: 256M
+    provides:
+      - name: cv19-tracing-xsjs_api
+        properties:
+          url: '${default-url}'
+    requires:
+      - name: cv19-tracing-uaa
+      - name: hdi_cv19-tracing-db
+      - name: application-log-srv
+  - name: cv19-tracing-ui-devices
+    type: html5
+    path: cv19-tracing-ui-devices
+    build-parameters:
+      builder: custom
+      commands:
+        - npm install
+        - npm run build
+      supported-platforms: []
+      build-result: dist
+    requires:
+      - name: cv19-tracing-html5_repo_runtime
+  - name: cv19-tracing-ui-infected
+    type: html5
+    path: cv19-tracing-ui-infected
+    build-parameters:
+      builder: custom
+      commands:
+        - npm install
+        - npm run build
+      supported-platforms: []
+      build-result: dist
+    requires:
+      - name: cv19-tracing-html5_repo_runtime
+  - name: cv19-tracing-ui-dashboard
+    type: html5
+    path: cv19-tracing-ui-dashboard
+    build-parameters:
+      builder: custom
+      commands:
+        - npm install
+        - npm run build
+      supported-platforms: []
+      build-result: dist
+    requires:
+      - name: cv19-tracing-html5_repo_runtime
+  - name: cv19-tracing-flp
+    type: com.sap.portal.content
+    path: cv19-tracing-flp
+    parameters:
+      stack: cflinuxfs3
+      memory: 128M
+      buildpack: 'https://github.com/cloudfoundry/nodejs-buildpack/releases/download/v1.6.39/nodejs-buildpack-cflinuxfs3-v1.6.39.zip'
+    requires:
+      - name: portal_resources_cv19-tracing
+      - name: uaa_covid19-contact-tracing-be
+      - name: cv19-tracing-html5_repo_host
+      - name: cv19-tracing-ui_deployer
+resources:
+  - name: cv19-tracing-html5_repo_runtime
+    parameters:
+      service-plan: app-runtime
+      service: html5-apps-repo
+    type: org.cloudfoundry.managed-service
+  - name: cv19-tracing-html5_repo_host
+    parameters:
+      service-plan: app-host
+      service: html5-apps-repo
+    type: org.cloudfoundry.managed-service
+  - name: hdi_cv19-tracing-db
+    properties:
+      hdi-container-name: '${service-name}'
+    type: com.sap.xs.hdi-container
+  - name: cv19-tracing-uaa
+    parameters:
+      service-name: cv19-tracing-uaa
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+  - name: application-log-srv
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: application-logs
+      service-plan: lite
+  - name: uaa_covid19-contact-tracing-be
+    parameters:
+      path: ./xs-security.json
+      service-plan: application
+      service: xsuaa
+    type: org.cloudfoundry.managed-service
+  - name: portal_resources_cv19-tracing
+    parameters:
+      service-plan: standard
+      service: portal
+    type: org.cloudfoundry.managed-service

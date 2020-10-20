@@ -1,0 +1,141 @@
+{
+	"_version": "1.12.0",
+	"sap.app": {
+		"id": "covid19.ui.booking.cv19-tracing-ui-booking",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"dataSources": {
+			"main": {
+				"uri": "/service_api/odata/services.xsodata/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/main/metadata.xml"
+				}
+			},
+			"init_data_alias": {
+				"uri": "model/init_data.json",
+				"type": "JSON"
+			}
+		},
+		"crossNavigation": {
+			"inbounds": {
+				"intent1": {
+					"signature": {
+						"parameters": {},
+						"additionalParameters": "allowed"
+					},
+					"semanticObject": "RoomBooking",
+					"action": "display",
+					"title": "Room Booking",
+					"subTitle": "Meeting room reservation",
+					"icon": "sap-icon://meeting-room"
+				}
+			}
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {
+			"icon": "",
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "covid19.ui.booking.cv19-tracing-ui-booking.view.App",
+			"type": "XML",
+			"async": true,
+			"id": "idAppControl"
+		},
+		"dependencies": {
+			"minUI5Version": "1.60.0",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.m": {},
+				"sap.ui.layout": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"": {
+				"type": "sap.ui.model.json.JSONModel",
+				"dataSource": "init_data_alias"
+			},
+			"odata": {
+				"dataSource": "main",
+				"settings": {
+					"defaultCountMode": "Inline",
+					"defaultUpdateMethod": "PUT",
+					"useBatch": true
+				}
+			},
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "covid19.ui.booking.cv19-tracing-ui-booking.i18n.i18n"
+				}
+			}
+		},
+		"resources": {
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			],
+			"js": [
+				{
+					"uri": "util/lodash.js"
+				}
+			]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"viewPath": "covid19.ui.booking.cv19-tracing-ui-booking.view",
+				"controlId": "idAppControl",
+				"controlAggregation": "pages",
+				"async": true
+			},
+			"routes": [
+				{
+					"name": "Main",
+					"pattern": "",
+					"target": [
+						"Main"
+					]
+				}
+			],
+			"targets": {
+				"Main": {
+					"viewType": "XML",
+					"viewLevel": 1,
+					"viewName": "Main"
+				}
+			}
+		}
+	},
+	"sap.platform.cf": {
+	  "oAuthScopes": [
+	    "$XSAPPNAME.USER"
+	  ]
+	}
+}

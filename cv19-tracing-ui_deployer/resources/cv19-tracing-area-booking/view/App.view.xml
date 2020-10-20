@@ -1,0 +1,26 @@
+ <!-- <mvc:View 
+  displayBlock="true"
+  xmlns="sap.m"
+  xmlns:mvc="sap.ui.core.mvc">
+  <App 
+    id="idAppControl"
+    busy="{/busy}"
+    busyIndicatorDelay="0" />
+</mvc:View> -->
+
+<mvc:View 
+  xmlns="sap.f" 
+  xmlns:mvc="sap.ui.core.mvc" 
+  displayBlock="true" 
+  height="100%">
+	<FlexibleColumnLayout
+    id="idAppControl"  
+		autoFocus="false"
+    busy="{/busy}"
+    busyIndicatorDelay="0" 
+		stateChange="onStateChanged"
+		restoreFocusOnBackNavigation="true"
+		layout="{/layout}"
+		backgroundDesign="Translucent"
+    />
+</mvc:View>

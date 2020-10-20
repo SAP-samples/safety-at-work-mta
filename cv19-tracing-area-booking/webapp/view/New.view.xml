@@ -1,0 +1,117 @@
+<mvc:View 
+	controllerName="cv19.tracing.area.booking.cv19-tracing-area-booking.controller.New" 
+	displayBlock="true" 
+	xmlns="sap.m" 
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:u="sap.ui.unified">
+	<Page
+		titleAlignment="Center"
+		title="{i18n>newBookingPageTitle}"
+		binding="{/newBooking}">
+		<headerContent>
+			<Button 
+				icon="sap-icon://decline"
+				press="onNavBack"/>
+		</headerContent>
+		<content>
+
+			<VBox
+				class="sapUiSmallMargin">
+				<!-- Area Selection -->
+				<Label 
+					text="{i18n>selectArea}: " 
+					labelFor="selectArea"
+					required="true" />
+				<Select
+					id="selectArea"
+					class="sapUiTinyMarginBottom" 
+					width="100%"
+					showSecondaryValues= "true"
+					forceSelection="false"
+					change="onSelectAreaSelectionChange"
+					selectedKey="{AreaID}"
+					items="{
+						path: '/areas',
+						sorter: { path: 'Description' }
+					}">
+					<core:ListItem 
+						key="{DeviceID}" 
+						text="{Description}" 
+						additionalText= "{i18n>capacity}: {Capacity}"/>
+				</Select>
+	
+				<!-- Calendar Date Selection + Timeframe -->
+				<Label 
+					class="sapUiSmallMarginTop sapUiTinyMarginBottom"
+					text="{i18n>selectDate}: " 
+					visible="{= ${AreaID} !== null }"
+					labelFor="datePickerCalendar"
+					required="true" />
+				<u:Calendar
+					id="datePickerCalendar"
+					legend="datePickerCalendarLegend"
+					width="100%"
+					startDateChange="onCalendarStartDateChange"
+					visible="{= ${AreaID} !== null }"
+					select="onDatePickerCalendarSelect" />
+				<u:CalendarLegend 
+					id="datePickerCalendarLegend"
+					visible="{= ${AreaID} !== null }">
+					<u:items>
+						<u:CalendarLegendItem
+							type="Type01"
+							text="{i18n>calendarWarningTooltip}"/>
+						<u:CalendarLegendItem
+							type="Type04"
+							text="{i18n>calendarErrorTooltip}"/>
+					</u:items>
+				</u:CalendarLegend>
+
+				<Label 
+					class="sapUiSmallMarginTop sapUiTinyMarginBottom"
+					labelFor="timeframeSegentedButton"
+					text="{i18n>timeframe}: " 
+					visible="{= ${AreaID} !== null }"
+					required="true" />
+				<SegmentedButton 
+					id="timeframeSegentedButton"
+					width="100%"
+					visible="{= ${AreaID} !== null }"
+					selectedKey="{timeframe}">
+					<items>
+						<SegmentedButtonItem text="{i18n>wholeDay}" key="wholeDay" />
+						<SegmentedButtonItem text="{i18n>morningOnly}" key="morning" />
+						<SegmentedButtonItem text="{i18n>afternoonOnly}" key="afternoon" />
+					</items>
+				</SegmentedButton>
+
+				<!-- Notes -->
+				<Label 
+					class="sapUiSmallMarginTop sapUiTinyMarginBottom"
+					visible="{= ${AreaID} !== null }"
+					text="{i18n>newReservationNotes}: " 
+					labelFor="notesTextArea" 
+					required="false"/>
+				<TextArea 
+					id="notesTextArea"
+					visible="{= ${AreaID} !== null }"
+					placeholder="{i18n>inputNotesPlaceholder}"
+					value="{Notes}"
+					rows="3"
+					width="100%"/>
+
+				<!-- Save Button -->
+				<Button
+					class="sapUiSmallMarginTop"
+					visible="{= ${AreaID} !== null }"
+					text="{i18n>saveBooking}"
+					type="Accept"
+					press="onSaveButtonPress"
+					width="100%"/>
+			</VBox>
+
+
+		</content>
+	</Page>
+</mvc:View>

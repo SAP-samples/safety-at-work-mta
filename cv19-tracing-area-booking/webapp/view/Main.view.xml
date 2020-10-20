@@ -1,0 +1,89 @@
+<mvc:View 
+	controllerName="cv19.tracing.area.booking.cv19-tracing-area-booking.controller.Main" displayBlock="true" 
+	xmlns="sap.m" 
+	xmlns:u="sap.ui.unified"
+	xmlns:f="sap.f"
+	xmlns:l="sap.ui.layout"
+	xmlns:mvc="sap.ui.core.mvc">
+	<Page 
+		showHeader="false"
+		showFooter="{device>/system/phone}">
+		<content>
+			<!-- My Bookings -->
+			<List
+				id="myBookingsList"
+				class="sapUiTinyMarginTop"
+				inset="{= !${device>/system/phone} }"
+				growing="true"
+				growingScrollToLoad="true"
+				sticky="HeaderToolbar"
+				items="{
+					path: '/myBookings',
+					sorter: {
+						path: 'Description',
+						descending: false,
+						group: true
+					},
+					groupHeaderFactory: '.getGroupHeader'
+				}">
+				<headerToolbar>
+					<Toolbar>
+						<Title 
+							text="{i18n>myBookingsListTitle}"
+							level="H2"
+							titleStyle="H2"/>
+						<ToolbarSpacer />
+						<Button 
+							visible="{= !${device>/system/phone} }"
+							icon="sap-icon://add"
+							type="Ghost"
+							text="{i18n>newBooking}"
+							press="onNewBookingButtonPress"/>
+					</Toolbar>
+				</headerToolbar>
+				<StandardListItem
+					class="areaBookingListItem"
+					title="{Description}"
+					iconInset="false"
+					icon="{
+						path: 'ApprovalStatus',
+						formatter: '.formatter.formatApprovalStatusIcon'
+					}"
+					info="{
+						path: 'ApprovalStatus',
+						formatter: '.formatter.formatApprovalStatusText'
+					}"
+					infoState="{
+						path: 'ApprovalStatus',
+						formatter: '.formatter.formatApprovalStatusState'
+					}"
+					infoStateInverted="true"
+					highlight="{
+						path: 'ApprovalStatus',
+						formatter: '.formatter.formatApprovalStatusState'
+					}"
+					description="{
+						path: 'DateStart',
+						type: 'sap.ui.model.type.Date',
+						formatOptions: {
+							style: 'medium'
+						}
+					}"
+					type="{= ${ApprovalStatus} === 0 ? 'DetailAndActive' : 'Inactive'}"
+					press="onMyBoogingListItemPress"
+					detailPress="onMyBoogingListItemPress">
+					</StandardListItem>
+			</List>
+		</content>
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer />
+				<Button 
+					icon="sap-icon://add"
+					type="Ghost"
+					text="{i18n>newBooking}"
+					press="onNewBookingButtonPress"/>
+			</Toolbar>
+		</footer>
+	</Page>
+</mvc:View>

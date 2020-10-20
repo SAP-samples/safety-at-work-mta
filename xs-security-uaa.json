@@ -1,0 +1,54 @@
+{
+  "xsappname": "covid19-contact-tracing-be",
+  "tenant-mode": "dedicated",
+  "description": "Security profile of called application",
+  "scopes": [
+    {
+      "name": "uaa.user",
+      "description": "UAA"
+    },
+    {
+      "name": "$XSAPPNAME.USER",
+      "description": "User role"
+    },
+    {
+      "name": "$XSAPPNAME.ADMIN",
+      "description": "Admin role"
+    }
+  ],
+  "attributes" : [ { 
+		"name" : "Approver", 
+		"description" : "Approver", 
+		"valueType" : "string",
+"valueRequired": "false" }
+		],
+  "role-templates": [
+    {
+      "name": "Token_Exchange",
+      "description": "UAA",
+      "scope-references": [
+        "uaa.user",
+        "xs_authorization.read"
+      ]
+    },
+    {
+      "name": "END_USER",
+      "description": "End user Role",
+      "scope-references": [
+        "uaa.user",
+        "$XSAPPNAME.USER"
+      ],
+		"attribute-references": [
+			"Approver"
+		]
+    },
+    {
+      "name": "ADMINISTRATOR",
+      "description": "Admin Role",
+      "scope-references": [
+        "uaa.user",
+        "$XSAPPNAME.ADMIN"
+      ]
+    }
+  ]
+}

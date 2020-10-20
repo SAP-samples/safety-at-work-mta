@@ -16,7 +16,12 @@
       "description": "Admin role"
     }
   ],
-  "attributes" : [],
+  "attributes" : [ { 
+		"name" : "Approver", 
+		"description" : "Approver", 
+		"valueType" : "string",
+"valueRequired": "false" }
+		],
   "role-templates": [
     {
       "name": "Token_Exchange",
@@ -32,7 +37,10 @@
       "scope-references": [
         "uaa.user",
         "$XSAPPNAME.USER"
-      ]
+      ],
+		"attribute-references": [
+			"Approver"
+		]
     },
     {
       "name": "ADMINISTRATOR",

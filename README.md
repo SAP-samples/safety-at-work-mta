@@ -1,6 +1,7 @@
 ![Safety@Work header](/documentation/images/header.png)
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![REUSE status](https://api.reuse.software/badge/github.com/SAP-samples/safety-at-work-mta)](https://api.reuse.software/info/github.com/SAP-samples/safety-at-work-mta)
 
 Table of contents
 =================
@@ -13,7 +14,11 @@ Table of contents
   - [WebIDE](#webide)
   - [Cloud Foundry CLI](#cloud-foundry-cli)
   - [Post-deployment checks](#post-deployment-checks)
-- [The Data Model](#the-data-model)
+  - [Post-deployment configurations](#post-deployment-configurations)
+    - [Email destination configuration](#email-destination-configuration)
+    - [XSJS destination configuration](#xsjs-destination-configuration)
+    - [Approver attribute assignment](#approver-attribute-assignment)
+- [Data Model](#data-model)
   - [Entites and Relations](#entites-and-relations)
   - [DB Functions](#db-functions)
   - [Views](#views)
@@ -24,7 +29,10 @@ Table of contents
     - [Function **importEvents**](#function-importevents)
     - [Function **insertEIDs**](#function-inserteids)
     - [Function **insertInfected**](#function-insertinfected)
-  - [License](#license)
+    - [Function **setApprovalStatus**](#function-setapprovalstatus)
+- [Approval Workflow (SCP Workflow service)](#approval-workflow-scp-workflow-service)
+- [UI Applications](#ui-applications)
+- [License](#license)
 <!--te-->
 
 Prerequisites for deploy
@@ -38,12 +46,22 @@ Below are listed SCP services & entitlements that must be available within SCP C
 
 Service     | Plan              | Quantity
 ---------   | ---------------   | -----
-**Application Runtime** | MEMORY | 3 GB
-**HTML5 Applications** | app-host | 6 MB
+**Application Runtime** | MEMORY | 4 GB
+**HTML5 Applications** | app-host | 10 MB
 **Mobile Services** | standard | Total nr of users using the mobile app
 **Portal** | standard | --
 **SAP HANA Service** or **Cloud** | GBSTANDARD or hana | minimum quantity
 **SAP HANA Schemas & HDI Containers** | hdi-shared | --
+**Workflow Service** | standard | --
+
+Prerequisites setup process includes following actions that must be performed to properly setup the Cloud Foundry environment:
+
+  1. Setup **Subaccount** + **Cloud Foundry Organization** and **Space**. To do this, have a look at [Getting Started with an Enterprise Account in the Cloud Foundry Environment](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/56440ab2380041e092c29baf2893ef97.html) section of SAP Help portal;
+   
+  2. Setup the **Mobile Services** tenant in the newly created SCP Cloud Foundry space. Have a look at [Mobile Services setup page](https://help.sap.com/viewer/468990a67780424a9e66eb096d4345bb/Cloud/en-US/d2a9afc1681c4e57a4a0f2039274d250.html) in SAP Help portal;
+
+  3. If the HANA service is not instantiated into the same space where you're about to deploy the application, it is necessary to create an **Instance Sharing** configuration within the SAP HANA Service Dashboard. To do so, follow the [Share a Database with Other Spaces](https://help.sap.com/viewer/cc53ad464a57404b8d453bbadbc81ceb/Cloud/en-US/390b47b7c0314d57a1829a0759a71ace.html) section of SAP Help Portal.
+
 
 Deployment
 ==========
@@ -146,10 +164,118 @@ By clicking the `Application Routes` link, Fiori Launchpad application is shown 
 
 ![Safety @ Work Fiori Launchpad with applications](/documentation/images/10_flp_apps.png)
 
+## Post-deployment configurations
 
+In order to let the **Workflow** works properly, we need to setup following **destinations** within SCP subaccount
 
-# The Data Model
+### Email destination configuration
+
+In order to allow Workflow service to send email to approvers, it is necessary to setup a destination that points to the SMTP server of the company.
+
+**NB:** SMTP server must adhere to a set of specification in order to be configurable within the destination. Refer [Configure the Workflow Service Mail Destination](https://help.sap.com/viewer/e157c391253b4ecd93647bf232d18a83/Cloud/en-US/45220d841c704a4c8ac78618207ee103.html) for further details.
+
+Here's an example code snippet that can be used as a guide to properly create email destination. You can copy-paste it into a file (saved without file extension), fill the missingi fields (marked with **< ... >** chars) and import it directly within destination page of the subaccount.
+
+```
+Type=MAIL
+
+Name=bpmworkflowruntime_mail
+
+mail.user=<smtp_user>
+mail.password=<smtp_password>
+
+mail.smtp.host=<smtp_host>
+mail.smtp.port=587
+mail.transport.protocol=smtp
+mail.smtp.starttls.required=true
+mail.smtp.starttls.enable=true
+mail.smtp.auth=true
+
+mail.smtp.ssl.trust=*
+
+mail.smtp.from=<email_address_to_put_in_from>
+mail.smtp.ssl.checkserveridentity=true
+
+mail.bpm.send.disabled=false
+```
+
+The final result should look like as follow:
+
+![WF email destination](/documentation/images/wf_email_destination.png)
+
+---
+### XSJS destination configuration
+
+The Workflow requires an additional destination to be able to communicate with Safety@Work business logic - exposed through XSJS service - in order to change also in back-end tasks approval status.
+
+First of all it is necessary to access the **cv19-tracing-xsjs** service overview page, and from there the "Service Binding" section.
+
+![SCP XSJS Service binding section located at](/documentation/images/xsjs_destination_auth_0.png)
+
+From the next page take note of following information from the **sensitive data section** of the **uaa_covid19-contact-tracing-be** bound service:
+
+ 1. *clientid*
+   
+ 2. *clentsecret*
+
+ 3. *url*
+
+![XSJS UAA service details](/documentation/images/xsjs_destination_auth_1.png)
+
+Switch back to destination configuration within subaccount cockpit and create a new destination using these informations, in order to properly address *cv19-tracing-xsjs* service.
+
+![SCP Destination configuration](/documentation/images/xsjs_destination_auth_2.png)
+
+**NB:** in the Token Service URL you must type the value of "url" field with */oauth/token* appended at the end. Final URL should look like as follow:
+
+`https://yourorganizationid.authentication.yourregion.hana.ondemand.com/oauth/token`
+
+---
+### Approver attribute assignment
+
+In order to "inform" the Workflow service about the approver recipient, Safety@Work app grants the possibility to associate an approver email address to a specific role. 
+
+To do that it is necessary to access one of the deployed app - e.g. **cv19-tracing-approuter** - and then access the *Roles* section [1]. Inside it, it is necessary to create a new Role [2] in order to specify the approver's email approver.
+
+![CV19 tracing Roles section](/documentation/images/approver_role_1.png)
+
+In upcoming wizard steps insert:
+ - *Role Name* - a generic name that allows you to recognize the new role (e.g. the name of the team that an user is part of);
+  
+ - *Description* - free text that describe the aim of the new role;
+  
+ - Role Template - pick *END_USER* from the drop down list.
+
+![Role configuration wizard step 1](/documentation/images/approver_role_2.png)
+
+In the step #2 specify in the *Values* field the email address of the approver associated to the role.
+
+**NB:** be sure to insert only one email address.
+
+Once you've done, hit enter key and a new tag will be added in the attibute field.
+
+![Role configuration wizard step 2](/documentation/images/approver_role_3.png)
+
+Step #3 allows you to assign the role to a *Role Collection* (in case it already exists). This step can be skipped and postponed after role is created.
+
+In step #4 review all data and click *Finish* button to save the new Role.
+
+![Role configuration wizard step 4](/documentation/images/approver_role_4.png)
+
+Last step is to assign this role - if not already done - to a Role Collection and, subsequently, assign the Role Collection to users.
+Please refer to [Maintain Role Collections](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/d5f1612d8230448bb6c02a7d9c8ac0d1.html) of SAP Help portal.
+
+Here's an example of new Role Collection created within the account assigned to basic users.
+
+**NB:** the newly created Role Collection must include also *WorkflowParticipant* Workflow's standard roles to grant the apps the possibility to trigger the service properly.
+
+![SafetyAtWork generic user Role Collection](/documentation/images/wf_rc_user.png)
+
+This Role Collection **must** be assigned to all the users that will use the app.
+
+# Data Model
 The application data model is made by both classical DB tables and DB views. All the artifacts are store in the module with name **cv19-tracing-db**. The implementation follows the guideline of using HANA development infrastructure to create a corresponding HANA container. See in the following paragraphs all the details
+
 ## Entites and Relations
 
 >### **Device:**
@@ -234,6 +360,24 @@ The application data model is made by both classical DB tables and DB views. All
 >>      - DeviceID(key): String 100
 >>      - TagKey(key):  String 100
 
+>### **Reservation:**
+>this table contains all the reservation sent to the system for booking both rooms and slot in an area (for example a parking lot). 
+>
+	>- ID (key): Bigint --> *auto generated by HANA*
+	>- Subject: String 200 (not null)
+	>- DateStart: DateTime
+  >- DateEnd: DateTime 
+  >- PartecipantsNumber: Integer
+  >- Notes String 2000
+	>- RoomID String 100 
+	>- EmployeeID String 200 
+	>- ApprovalStatus TinyInt --> *enum 0 to be approved, 1 approved, 2 rejected*
+	
+>
+>> **Table Relations:**
+>> - 1:1 [Device](#device) via RoomID
+>> - 1:1 [Device](#device) via EmployeeID
+
 ## DB Functions
 >### **GetMainRequests:**
 >this table function extracts all the [devices table](#device)'s fields, plus an additional one which contains concatenation of all tag keys assigned the them <br><br>
@@ -274,21 +418,6 @@ Aim of these view is to create the data layer for evaluate the rooms oocupation 
 >
 >![CV_MONITOR_REALTIME_Filters](/documentation/images/CV_MONITOR_REALTIME_Filters.png)
 
->### **DB View covid19.V_ROOMSHISTORYOCCUPATION:**
->this DB view gets the records from [CV_AGGREGATE_DEVICE_EVENTS](#hana-calculation-view-cv_aggregate_device_events) and split the events creation timestamp in goups of 5 minutes. For each one of those groups counts how many events were caught by every device. In this way the view provides how many persons occupied a room in slots of 5 minutes of time <br><br>
->
->**Declared Columns:**
->
->![V_ROOMSHISTORYOCCUPATION_Cols](/documentation/images/V_ROOMSHISTORYOCCUPATION_cols.png)
-
->### **DB View covid19.V_DEVICEUSER:**
->this DB view gets the records from [Device](#device) table extracting just the properties DeviceID and Descriotion of the devices of type USER. This view is for the purpose of showing a value help in the DeviceID field during the Infected creation process<br><br>
->
->**Declared Columns:**
->
->![V_DEVICEUSER_Cols](/documentation/images/V_DEVICEUSER_Cols.png)
-
->
 >### **HANA Calculation View CV_HISTORY_MONITOR:**
 >this CV gets the records from [V_ROOMSHISTORYOCCUPATION](#db-view-covid19.v_roomshistoryoccupation) and add a column called Avg, which computes the average amount of room occupation in the time slots provided by the DB view. Moreover, for every returned record provides a String field called TimeFrame. This field returns a string that represents the hour of the day when the Avg value is computed. 
 The CV expects to have 2 parameters (shown below) that define the time window when to perform the analisys. The parameters define the start and the end date/time of the window.
@@ -320,6 +449,71 @@ Expected table results could be:<br><br>
 >**Calculated Columns:**
 >![CV_MONITOR_REALTIME_Filters](/documentation/images/CV_HISTORY_MONITOR_CalcCol.png)
 
+>### **HANA Calculation View CV_AREA_OCCUPATION_BY_DATE:**
+>this CV provides the value of occupation for area id provided as input value. This values are grouped by date in the time window defined by input parameters start and end date  <br><br>
+>**Declared Columns:**
+>
+>![CV_AREA_OCCUPATION_BY_DATES_Cols](/documentation/images/CV_AREA_OCCUPATION_BY_DATES_Cols.jpg)
+>
+>**Declared Params:**
+>
+>![CV_AREA_OCCUPATION_BY_DATES_Params1](/documentation/images/CV_AREA_OCCUPATION_BY_DATES_Params1.jpg)
+>
+>![CV_AREA_OCCUPATION_BY_DATES_Params2](/documentation/images/CV_AREA_OCCUPATION_BY_DATES_Params2.jpg)
+>
+>![CV_AREA_OCCUPATION_BY_DATES_Params3](/documentation/images/CV_AREA_OCCUPATION_BY_DATES_Params3.jpg)
+>
+>**Declared Filters:**
+>
+>![CV_AREA_OCCUPATION_BY_DATES_filters](/documentation/images/CV_AREA_OCCUPATION_BY_DATES_filters.png)
+
+>### **DB View covid19.V_ROOMSHISTORYOCCUPATION:**
+>this DB view gets the records from [CV_AGGREGATE_DEVICE_EVENTS](#hana-calculation-view-cv_aggregate_device_events) and split the events creation timestamp in goups of 5 minutes. For each one of those groups counts how many events were caught by every device. In this way the view provides how many persons occupied a room in slots of 5 minutes of time <br><br>
+>
+>**Declared Columns:**
+>
+>![V_ROOMSHISTORYOCCUPATION_Cols](/documentation/images/V_ROOMSHISTORYOCCUPATION_cols.png)
+
+>### **DB View covid19.V_DEVICEUSER:**
+>this DB view gets the records from [Device](#device) table extracting just the properties DeviceID and Descriotion of the devices of type USER. This view is for the purpose of showing a value help in the DeviceID field during the Infected creation process<br><br>
+>
+>**Declared Columns:**
+>
+>![V_DEVICEUSER_Cols](/documentation/images/V_DEVICEUSER_Cols.png)
+>
+
+>### **DB View covid19.V_DEVICEAREA:**
+>this DB view gets the records from [Device](#device) table extracting devices of type AREA. This view is usefull to populate value helpers, combo boxes, etc to enlist areas available<br><br>
+>
+>**Declared Columns:**
+>
+>![V_DEVICEAREA_Cols](/documentation/images/V_DEVICEAREA_Cols.png)
+>
+
+>### **DB View covid19.V_DEVICEROOM:**
+>this DB view gets the records from [Device](#device) table extracting devices of type BEACON (the rooms). This view is usefull to populate value helpers, combo boxes, etc to enlist rooms available<br><br>
+>
+>**Declared Columns:**
+>
+>![V_DEVICEROOM_Cols](/documentation/images/V_DEVICEROOM_Cols.png)
+>
+
+>### **DB View covid19.V_DEVICEROOMAREA:**
+>this DB view gets the records from [Device](#device) table extracting devices of type BEACON (the rooms) and AREA. This view is usefull to populate value helpers, combo boxes, etc to enlist rooms and areas available<br><br>
+>
+>**Declared Columns:**
+>
+>![V_DEVICEROOMAREA_Cols](/documentation/images/V_DEVICEROOMAREA_Cols.png)
+>
+
+>### **DB View covid19.V_DEVICERESERVATION:**
+>this DB view gets the records from the join between [Device](#device) table and [Reservation](#reservation) table extracting all reservations stored, plus the booked room's data and the employee name <br><br>
+>
+>**Declared Columns:**
+>
+>![V_DEVICERESERVATION_Cols](/documentation/images/V_DEVICERESERVATION_Cols.png)
+
+
 # The Services Layer
 The service layer is fully implemented using a node module with xsjs package. Module name is **cv19-tracing-xsjs**.
 The services exposed are of OData type and pure XSJS. For some OData entities we have overridden the standard records update behavior.
@@ -340,9 +534,15 @@ Functions overridden are:
 - *"demo.sap.presales.covid19.model::covid19.EphemeralIDInfected" as "EphemeralIDInfectedSet"*: it exposes the EphemeralIDInfected table. It supports navigation to ProximityDetected table to get all the records of the EIDs of possible infected devices
 - *"demo.sap.presales.covid19.model::covid19.ProximityDetected" as "ProximityDetectedSet"*: it exposes the ProximityDetected table. It supports navigation to EphemeralIDSet table to get corresponding record of a certain matched EID
 - *"demo.sap.presales.covid19.model::covid19.Tag" as "TagSet"*: it exposes the Tag table
+- *"demo.sap.presales.covid19.model::covid19.Reservation" as "ReservationSet"*: it exposes the Reservation table
 - *"demo.sap.presales.covid19.cv::CV_MONITOR_REALTIME" as "RealTimeRoomStatus"*: it exposes the calculation view CV_MONITOR_REALTIME. It supports navigation to Tag table to get corresponding tags assigned to a device
 - *"demo.sap.presales.covid19.cv::CV_HISTORY_MONITOR" as "HistoryDevicesStatus"*: it exposes the calculation view CV_HISTORY_MONITOR
+- *"demo.sap.presales.covid19.cv::CV_AREA_OCCUPATION_BY_DATE" as "OccupationByDate"*: it exposes the calculation view CV_AREA_OCCUPATION_BY_DATE
 - *"demo.sap.presales.covid19.model::covid19.V_DEVICEUSER" as "DeviceUserViewSet"*: it exposes the DB view V_DEVICEUSER
+- *"demo.sap.presales.covid19.model::covid19.V_DEVICEROOMAREA" as "RoomAreaSet"*: it exposes the DB view V_DEVICEROOMAREA
+- *"demo.sap.presales.covid19.model::covid19.V_DEVICEROOM" as "RoomSet"*: it exposes the DB view V_DEVICEROOM
+- *"demo.sap.presales.covid19.model::covid19.V_DEVICEAREA" as "AreaSet"*: it exposes the DB view V_DEVICEAREA
+- *"demo.sap.presales.covid19.model::covid19.V_DEVICERESERVATION" as "RoomReservationSet"*: it exposes the DB view V_DEVICERESERVATION
 ## XSJS services
 These services are implemented using XSJS coding language. The backend layer exposes 4 different services with different purposes (see details below). All those services are available via a single HTTP end point and the execution of the different functions is steered by the provided JSON payload. The HTTP end point is implemented in the file **/lib/xsjs/functions.xsjs**. The code imports 4 xsjs libraries to execute the corresponding requested functions. The libraries are store in the path **/lib/commons/libs** and library name match with function name.<br>
 The structure of the generic HTTP end point is as follow:<br><br>
@@ -518,7 +718,120 @@ The structure of the generic HTTP end point is as follow:<br><br>
 - **ERRORS**:
   - *in case of an empty deviceID returns the message: Missing device ID parameter*
   - *in case distance parameter is not of a number returns the message: Provided distance value is not a number. Please send a number*
+
+### Function **setApprovalStatus**
+- **URL (method POST)**: <xsjs_module_url>/xsjs/functions.xsjs
+- **DESCRIPTION**: given a reservation ID and an approval status (values accepted are 0 or 1 or 2) sets the approval status field to the provided value
+- **INPUT**:
+```
+{
+    function: "setApprovalStatus",    
+   "payload" : {
+        "ID": "sReservationID", <-- mandatory
+        "ApprovalStatus": "iApprovalStatus" (0, 1, 2) <-- mandatory
+        
+    }
+ }
+ ```
+- **OUTPUT**:
+```
+{
+    "function": "setApprovalStatus",
+    "value": {
+        "updatedRecords": 1
+    }
+}
+```
   
-## License
+Approval Workflow (SCP Workflow service)
+========================================
+
+The workflow structure is depicted in following picture:
+
+![Workflow structure](/documentation/images/wf_structure_1.png)
+
+Referring the above picture, here's the description of each step of the Workflow:
+1. **Create task link** - Script block that is used to build the link to My Inbox application that will be displayed in the email body (sent to the Approver)
+
+  ```javascript
+    var sHash = "#WorkflowTask-DisplayMyInbox?sap-ui-app-id-hint=cross.fnd.fiori.inbox&/detail/NA/{{taskID}}/TaskCollection(SAP__Origin='NA',InstanceID='{{taskID}}')".replace(/{{taskID}}/g, $.info.workflowInstanceId),
+	    sMyInboxUrl = [$.context.appRouterUrl,sHash].join("");  // Concatenate appRouter URL (coming from UI) and Generated Hash path
+    $.context.mIU = sMyInboxUrl;  // My Inbox URL
+  ```
+2. **Send creation email** - Email task used to send an email to the approver. Its content is contained in the [WF Approval Email template HTML](/cv19-tracing-wf/webcontent/cv19approvalwf/wf_approval_email_template.html);
+   
+  ![Workflow Email Task](/documentation/images/wf_structure_2.png)
+
+3. **Apply Decision** - User Task performed by the approver. The Workflow pauses on this step untill the approver has taken its decision about the task sent to him.
+
+  ![Workflow User Task properties](/documentation/images/wf_structure_3.png)
+
+The UI configuration is delegated to an *UI Form* named [reservationRequestForm](/cv19-tracing-wf/forms/cv19approvalwf/reservationRequestForm.form) that has following structure.
+
+  ![Workflow User Task properties](/documentation/images/wf_structure_4.png)
+
+and followign decision options.
+
+  ![Workflow User Task UI Form](/documentation/images/wf_structure_5.png)
+
+4. **Format context data** - Script Task that is used to format all context data that will be necessary for next steps. It creates:
+   -  the body of the email sent to the requestor;
+   -  the data structure that will be sent to the back-end service.
+
+    ```javascript
+    var bApproved = $.usertasks.usertask1.last.decision == "approve",
+        oData = {
+          backEndStatus: (bApproved) ? 1 : 2,
+          emailMessage: (bApproved) ? "Your request has been approved by the manager." : "Unfortunately your request has been rejected.\nPlease call your manager for further details.",
+          emailSubject: (bApproved) ? "Reservation request approved" : "Reservation request rejected",
+          backendData: {
+            hanaUrl: "/xsjs/functions.xsjs",
+            requestBody: {
+              function: "setApprovalStatus",
+              payload: {
+                  ApprovalStatus: (bApproved) ? 1 : 2,
+                  ID: $.context.r.i
+              }
+            },
+            responseBody: {}
+          }
+        };
+    $.context.cv19Data = oData;
+    ```
+
+5. **Update reservation task** - Service Task that calls XSJS back-end function in order to update the Reservation task according to applied decision.
+
+  ![Workflow Service Task properties](/documentation/images/wf_structure_6.png)
+
+6. **Send confirmation email** - Email Task used to inform the user about the decision taken by the approver. The content of email message is contained into [Response email body HTML file](cv19-tracing-wf/webcontent/cv19approvalwf/response_email_body.html).
+
+  ![Workflow Email Task properties](/documentation/images/wf_structure_7.png)
+
+UI Applications
+========================
+
+This MTA contains following UI5 applications:
+
+ - **Device** - Fiori Element template-based application, used to manage Devices master data. As explained in the [The Data Model](#the-data-model) section, a Device can be one of USER, BEACON or AREA according to the type of physical "thing" it is referred to (an app user, a meeting room or a bookable area);
+  
+  ![Device management app](/documentation/images/App01_device_management.png)
+
+ - **Tested Positives** - Fiori Element template-based application, used to register within the cloud system an user as "COVID-19 tested positive", in order to trigger back-end logic necessary to establish the complete exposure contacts graph;
+  
+  ![Tested positives app](/documentation/images/App02_tested_positives_app.png)
+  
+ - **Crowd Monitoring** - monitor application used to have both real-time and historical view of crowd levels within each "hot spot" mapped within the system;
+  
+  ![Crowd Monitoring app](/documentation/images/App03_crowd_monitoring_app.png)
+
+ - **Room Booking** - end user application used to book a meeting room and/or a common space for a group of people (according to its max capacity);
+  
+  ![Crowd Monitoring app](/documentation/images/App04_room_booking_app.png)
+
+ - **Area Booking** - end user application used to reserve "a spot" within a certain wide area (e.g. Parking lot).
+
+  ![Crowd Monitoring app](/documentation/images/App05_area_booking_app.png)
+
 License
-Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. This project is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](LICENSE) file.
+===========
+Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. This file is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](LICENSES/Apache-2.0.txt) file.

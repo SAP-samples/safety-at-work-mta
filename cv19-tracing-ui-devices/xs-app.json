@@ -6,7 +6,14 @@
   },
   "routes": [
     {
-      "source": "^/cf_cv19contacttracing_anon/(.*)$",
+      "source": "/service_api/(.*)$",
+      "target": "$1",
+      "authenticationType": "none",
+      "destination": "service_api",
+      "csrfProtection": false
+    },
+    {
+      "source": "/cf_cv19contacttracing_anon/(.*)$",
       "target": "$1",
       "authenticationType": "none",
       "destination": "service_api",

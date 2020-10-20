@@ -1,0 +1,37 @@
+{
+	"fileName": "id_1602259328071_64_hideControl",
+	"fileType": "change",
+	"changeType": "hideControl",
+	"moduleName": "",
+	"reference": "covid19.ui.devicesmanagement.cv19-tracing-ui-devices.Component",
+	"packageName": "$TMP",
+	"content": {},
+	"selector": {
+		"id": "covid19.ui.devicesmanagement.cv19-tracing-ui-devices::sap.suite.ui.generic.template.ListReport.view.ListReport::DeviceSet--deleteEntry",
+		"idIsLocal": false
+	},
+	"layer": "CUSTOMER_BASE",
+	"texts": {},
+	"namespace": "apps/covid19.ui.devicesmanagement.cv19-tracing-ui-devices/changes/",
+	"projectId": "covid19.ui.devicesmanagement.cv19-tracing-ui-devices",
+	"creation": "2020-10-09T16:02:51.031Z",
+	"originalLanguage": "EN",
+	"support": {
+		"generator": "Change.createInitialFileContent",
+		"service": "",
+		"user": "",
+		"sapui5Version": "1.82.1",
+		"sourceChangeFileName": "",
+		"compositeCommand": "id_1602259328072_65_composite"
+	},
+	"oDataInformation": {},
+	"dependentSelector": {},
+	"validAppVersions": {
+		"creation": "1.0.0",
+		"from": "1.0.0",
+		"to": "1.0.0"
+	},
+	"jsOnly": false,
+	"variantReference": "",
+	"appDescriptorChange": false
+}

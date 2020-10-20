@@ -35,6 +35,26 @@ function device_create(param) {
 		
 		sDescription = (!sDescription || sDescription==null) ? sID : sDescription;
 		
+		//check if device type is one of the allowed values: BEACON, AREA, USER
+		if(sType != "BEACON" && sType != "AREA" && sType != "USER" ){
+			
+			return {
+				HTTP_STATUS_CODE: 500, // e.g. 400, 500, etc. 
+				ERROR_MESSAGE: 'Device type value must be either BEACON or AREA or USER',
+				DETAILS: 'Device type value must be either BEACON or AREA or USER'
+			};
+		}
+		
+		//check if device type is BEACON and Capacity is > 0
+		if(sType == "BEACON" && (iCapacity==null || iCapacity <= 0) ){
+			
+			return {
+				HTTP_STATUS_CODE: 500, // e.g. 400, 500, etc. 
+				ERROR_MESSAGE: 'If you create a BEACON device please provide a people capacity',
+				DETAILS: 'If you create a BEACON device please provide a people capacity'
+			};
+		}
+		
 		//check if major and minor are numbers between 0 and 65535
 		if(sType.toLowerCase() == "beacon" && sMajor && sMajor!=null){
 			if(isNaN(sMajor)){
@@ -123,10 +143,10 @@ function device_create(param) {
 function device_delete(param) {
 
 	try {
-		var after = param.afterTableName;
+		var before = param.beforeTableName;
 
 		//Get Input New Record Values
-		var pStmt = param.connection.prepareStatement(`select * from "${after}"`);
+		var pStmt = param.connection.prepareStatement(`select * from "${before}"`);
 		var rs = null;
 		rs = pStmt.executeQuery();
 		var oNow = new Date(),
@@ -176,12 +196,22 @@ function device_update(param) {
 
 		while (rs.next()) {
 			sID = rs.getString(1);
-			sType = rs.getString(2);
+			sType = rs.getString(2).toUpperCase();
 			sDescription = rs.getString(3);
 			iCapacity = rs.getInteger(9);
 		}
 		pStmt.close();
-
+	
+		//check if device type is BEACON and Capacity is > 0
+		if(sType == "BEACON" && (iCapacity==null || iCapacity <= 0) ){
+			
+			return {
+				HTTP_STATUS_CODE: 500, // e.g. 400, 500, etc. 
+				ERROR_MESSAGE: 'If you update a BEACON device please provide a people capacity',
+				DETAILS: 'If you update a BEACON device please provide a people capacity'
+			};
+		}
+			
 		pStmt = param.connection.prepareStatement(
 			'UPDATE "demo.sap.presales.covid19.model::covid19.Device" set "Type"=?, "Description" = ?, "UpdatedAt" = ?, "UpdatedBy" = ?, "Capacity" = ?  where "DeviceID" = ?'
 		);

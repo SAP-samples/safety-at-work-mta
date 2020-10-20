@@ -72,7 +72,7 @@ function execute(obj) {
 
 		connection.executeUpdate(sSQL1, sId, deviceId);
 
-		/*check in the events table the source EIDs that met the found EIDs. Copy these matched in ProximityDetected table
+		/*check in the events table the source EIDs that met the found EIDs in the last 15 days. Copy these matched in ProximityDetected table
 		exclude by the list all the source EIDs that realted to same deviceID, for example, exclude matches between EID assigned
 		to multiple devices owned by same user
 		ProximityDetected table:
@@ -84,7 +84,7 @@ function execute(obj) {
 		var sSQL2 = 'insert into "demo.sap.presales.covid19.model::covid19.ProximityDetected" ';
 		sSQL2 += 'SELECT ?, "TargetIED", "SourceEID", "CreatedAt"';
 		sSQL2 += ' FROM "demo.sap.presales.covid19.model::covid19.Event"';
-		sSQL2 += ' WHERE "TargetIED" IN (';
+		sSQL2 += ' WHERE "CreatedAt" >= TO_TIMESTAMP(ADD_DAYS(CURRENT_DATE, -15)) AND "TargetIED" IN (';
 		sSQL2 += 'SELECT "EID" FROM "demo.sap.presales.covid19.model::covid19.EphemeralID" "E"';
 		sSQL2 += ' JOIN "demo.sap.presales.covid19.model::covid19.Device" "D" ON "E"."DeviceID" = "D"."DeviceID"';
 		sSQL2 += ' WHERE E."DeviceID" = ? and UPPER("D"."Type") = ?)	AND "Distance" > ? AND "SourceEID" NOT IN (';

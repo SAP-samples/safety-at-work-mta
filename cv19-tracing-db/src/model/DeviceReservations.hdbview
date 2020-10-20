@@ -1,0 +1,26 @@
+VIEW "demo.sap.presales.covid19.model::covid19.V_DEVICERESERVATION"
+AS 
+SELECT  
+	"D"."DeviceID",
+	"D"."Type",
+	"D"."Description",
+	"D"."Capacity",
+	"R"."ID" as "ReservationID",
+	"R"."Subject",
+	"R"."DateStart",
+	"R"."DateEnd",
+	"R"."PartecipantsNumber",
+	"R"."Notes" as "ReservationNotes",
+	"R"."RoomID",
+	"R"."EmployeeID",
+	"R"."ApprovalStatus",
+	"E"."Description" as "EmployeeName"
+	 
+from "demo.sap.presales.covid19.model::covid19.Device" as "D"
+	join
+	"demo.sap.presales.covid19.model::covid19.Reservation" as "R"
+	on "D"."DeviceID" = "R"."RoomID"
+	join
+	"demo.sap.presales.covid19.model::covid19.Device" as "E"
+	on "R"."EmployeeID" = "E"."DeviceID"
+where "D"."Type" <> 'USER';

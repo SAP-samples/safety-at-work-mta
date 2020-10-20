@@ -1,0 +1,1 @@
+sap.ui.define(["sap/ui/core/mvc/Controller"],function(n){"use strict";return n.extend("cv19.tracing.area.booking.cv19-tracing-area-booking.controller.View1",{onInit:function(){}})});

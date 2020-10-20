@@ -6,6 +6,19 @@
         "authenticationType": "xsuaa",
         "destination": "service_api",
         "csrfProtection": false
+      },{
+        "source": "^/js_api/(.*)$",
+        "target": "$1",
+        "authenticationType": "xsuaa",
+        "destination": "js_api",
+        "csrfProtection": false
+      },
+      {
+        "source": "^/bpmworkflowruntime/(.*)$",
+        "target": "/$1",
+        "service": "com.sap.bpm.workflow",
+        "endpoint": "workflow_rest_url",
+        "authenticationType": "xsuaa"
       }],
 	"welcomeFile": "/cp.portal"
 }

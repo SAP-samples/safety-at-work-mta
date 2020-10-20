@@ -1,0 +1,201 @@
+<core:FragmentDefinition
+		xmlns="sap.m"
+		xmlns:f="sap.ui.layout.form"
+		xmlns:l="sap.ui.layout"
+		xmlns:core="sap.ui.core">
+	<ResponsivePopover
+		id="detailsPopover"
+		class="sapUiPopupWithPadding"
+		busyIndicatorDelay="0"
+		busy="{/busy}" 
+		afterOpen="onDetailsPopoverAfterOpen"
+		afterClose="onDetailsPopoverAfterClose"
+		title="{title}"
+		placement="Auto">
+		<customData>
+			<core:CustomData 
+				key="popoverStatus"
+				value="ApprovalStatus{ApprovalStatus}"
+				writeToDom="true"/>
+		</customData>
+		<customHeader>
+			<Toolbar>
+				<Title 
+					class="sapUiSmallMarginBegin"
+					text="{i18n>reservationDetails}"
+					level="H3"
+					titleStyle="H3"/>
+				<ToolbarSpacer />
+				<ObjectStatus 
+					visible="{= !${/reservationEditMode} }"
+					inverted="true"
+					text="{
+						path: 'ApprovalStatus',
+						formatter: '.formatter.approvalStatusText'
+					}"
+					state="{
+						path: 'ApprovalStatus',
+						formatter: '.formatter.approvalStatusObjectStatusState'
+					}"/>
+				<ToolbarSpacer />
+				<ToggleButton 
+					icon="sap-icon://edit"
+					visible="{= ${ApprovalStatus} === 0 }"
+					pressed="{/reservationEditMode}"/>
+				<Button
+					icon="sap-icon://delete"
+					visible="{= ${ApprovalStatus} === 0 }"
+					type="Reject"
+					press="onDeleteReservationButtonPress"/>
+			</Toolbar>
+		</customHeader>
+		<f:SimpleForm
+				editable="false"
+				layout="ResponsiveGridLayout"
+				singleContainerFullSize="false">
+
+			<!-- Room -->
+			<Label 
+				text="{i18n>roomName}" 
+				labelFor="roomSelect" />
+			<Select
+				id="selectRoom"
+				class="sapUiTinyMarginBottom" 
+				editable="false"
+				width="100%"
+				showSecondaryValues= "true"
+				selectedKey="{DeviceID}"
+				items="{
+					path: '/rooms',
+					sorter: { path: 'Description' }
+				}">
+				<core:ListItem 
+					key="{DeviceID}" 
+					text="{Description}" 
+					additionalText= "{i18n>capacity}: {Capacity}"/>
+			</Select>
+
+			<!-- Subject -->
+			<Label 
+				text="{i18n>subject}" 
+				labelFor="subjectInput" 
+				required="{/reservationEditMode}"/>
+			<Input 
+				id="subjectInput" 
+				editable="{/reservationEditMode}"
+				class="sapUiTinyMarginBottom"
+				placeholder="{i18n>subjectInputPlaceholder}"
+				value="{Subject}"/>
+				
+			<!-- Start Date -->
+			<Label 
+				text="{i18n>startDate}" 
+				labelFor="startDate"
+				required="{/reservationEditMode}" />
+			<DateTimePicker 
+				id="startDate" 
+				class="sapUiTinyMarginBottom" 
+				editable="{/reservationEditMode}"
+				placeholder="{i18n>startDatePlaceholder}"
+				minDate="{/startDateDatePickerMinDate}"
+				minutesStep="15"
+				secondsStep="60"
+				displayFormat="short" 
+				required="{/reservationEditMode}" 
+				change="onDateTimePickerChange">
+				<customData>
+					<core:CustomData 
+						key="whichDate"
+						value="DateStart"/>
+				</customData>
+			</DateTimePicker>
+			
+			<!-- End Date -->
+			<Label 
+				text="{i18n>endDate}" 
+				labelFor="endDate"
+				required="{/reservationEditMode}" />
+			<DateTimePicker 
+				id="endDate" 
+				class="sapUiTinyMarginBottom" 
+				editable="{/reservationEditMode}"
+				placeholder="{i18n>endDatePlaceholder}"
+				minDate="{/endDateDatePickerMinDate}"
+				minutesStep="15"
+				secondsStep="60"
+				displayFormat="short" 
+				required="{/reservationEditMode}" 
+				change="onDateTimePickerChange">
+				<customData>
+					<core:CustomData 
+						key="whichDate"
+						value="DateEnd"/>
+				</customData>
+			</DateTimePicker>
+
+			<!-- ParticipantsNumber -->
+			<Label 
+				text="{i18n>participantsNumber}" 
+				labelFor="nrOfPeopleSlider" 
+				required="{/reservationEditMode}"/>
+			<l:Grid
+				width="100%"
+				hSpacing="0"
+				vSpacing="0">
+				<Slider 
+					id="nrOfPeopleSlider"
+					class="sapUiMediumMarginBottom" 
+					visible="{/reservationEditMode}"
+					enableTickmarks="true" 
+					min="1" 
+					max="{Capacity}" 
+					value="{PartecipantsNumber}"
+					width="100%">
+					<layoutData>
+						<l:GridData 
+							span="XL9 L9 M9 S9"/>
+					</layoutData>
+				</Slider>
+				<Input
+					change="onParticipantsNumberValueChange"
+					editable="{/reservationEditMode}"
+					value="{PartecipantsNumber}"
+					type="Number"
+					width="100%">
+					<layoutData>
+						<l:GridData 
+							spanXL="{= ${/reservationEditMode} ? 3 : 12}"
+							spanL="{= ${/reservationEditMode} ? 3 : 12}"
+							spanM="{= ${/reservationEditMode} ? 3 : 12}"
+							spanS="{= ${/reservationEditMode} ? 3 : 12}"/>
+					</layoutData>
+				</Input>
+			</l:Grid>
+
+			<!-- Notes -->
+			<Label 
+				text="{i18n>newReservationNotes}" 
+				labelFor="notesTextArea" 
+				required="false"/>
+			<TextArea 
+				id="notesTextArea"
+				editable="{/reservationEditMode}"
+				placeholder="{i18n>inputNotesPlaceholder}"
+				value="{ReservationNotes}"
+				rows="3"
+				width="100%"/>
+		</f:SimpleForm>
+		<beginButton>
+			<Button 
+				visible="{/reservationEditMode}"
+				type="Emphasized"
+				text="{i18n>update}" 
+				press="onDetailPopoverUpdateButtonPress"/>
+		</beginButton>
+		<endButton>
+			<Button 
+				text="{i18n>close}" 
+				press="onDetailPopoverCloseButtonPress"/>
+		</endButton>
+	</ResponsivePopover>
+</core:FragmentDefinition>

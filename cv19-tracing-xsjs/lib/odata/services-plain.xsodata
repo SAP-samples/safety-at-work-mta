@@ -1,9 +1,10 @@
 service  {
 	"demo.sap.presales.covid19.model::covid19.Device" as "DeviceSet" 
-		navigates ("Device_Owner" as "ownedBy", "Device_EphemeralID" as "toEIDs", "Device_Infected" as "toInfections")
+		navigates ("Device_Owner" as "ownedBy", "Device_EphemeralID" as "toEIDs", "Device_Infected" as "toInfections", "Device_Tags" as "toTags")
 		update using "common.libs:odataExits.xsjslib::device_update"
 		create using "common.libs:odataExits.xsjslib::device_create"
 		delete using "common.libs:odataExits.xsjslib::device_delete";
+	"demo.sap.presales.covid19.model::covid19.Device_Tag" as "DeviceTagSet" navigates ("DeviceTag_Tags" as "toTag");
 	"demo.sap.presales.covid19.model::covid19.EphemeralID" as "EphemeralIDSet" navigates ("EphemeralID_Device" as "toDevice");
 	"demo.sap.presales.covid19.model::covid19.Event" as "EventSet";
 	"demo.sap.presales.covid19.model::covid19.Infected" as "InfectedSet" navigates ("Infected_Device" as "toDevice", "Infected_EphemeralIDInfected" as "toInfectedEIDs");
@@ -15,6 +16,12 @@ service  {
     /*
     Associations
     */
+    
+    association "Device_Tags" 
+    principal "DeviceSet"("DeviceID") 
+    multiplicity "1" 
+    dependent "DeviceTagSet"("DeviceID") 
+    multiplicity "*";
     
     association "RaltimeStatus_Tags" 
     principal "RealTimeRoomStatus"("DeviceID") 
@@ -78,6 +85,13 @@ service  {
 	principal "ProximityDetectedSet"("EIDMatched")
 	multiplicity "1"
 	dependent "EphemeralIDSet"("EID")
+	multiplicity "1";
+	
+	/*navigates to corresponding tag*/
+	association "DeviceTag_Tags"
+	principal "DeviceTagSet"("TagKey")
+	multiplicity "1"
+	dependent "TagSet"("Key")
 	multiplicity "1";
 	
     

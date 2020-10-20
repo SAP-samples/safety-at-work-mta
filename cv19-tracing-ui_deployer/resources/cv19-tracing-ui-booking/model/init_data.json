@@ -1,0 +1,48 @@
+{
+  "busy": false,
+
+  "user": {
+    "id": "john.doe@sap.com",
+    "name": { "givenName": "John", "familyName": "Doe" },
+    "emails": [{ "value": "john.doe@sap.com" }]
+  },
+
+  "roomBookerSearchString": "",
+  "rooms": [],
+
+  "startDateDatePickerMinDate": null,
+  "endDateDatePickerMinDate": null,
+
+  "newReservation": {
+    "RoomID": null,
+    "subject": "",
+    "DateStart": null,
+    "DateEnd": null,
+    "PartecipantsNumber": 1,
+    "Notes": ""
+  },
+
+  "reservationEditMode": false,
+  "editedReservation": {},
+
+  "wfInitData": {
+      "definitionId": "cv19approvalwf",
+      "context": {
+          "u": {
+              "aN": "",
+              "aM": "",
+              "e": "",
+              "n": ""
+          },
+          "r": {
+              "i": -1,
+              "s": "",
+              "sd": "",
+              "ed": "",
+              "p": "",
+              "n": ""
+          },
+          "originalTask": {}
+      }
+  }
+}
