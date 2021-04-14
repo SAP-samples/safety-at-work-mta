@@ -9,7 +9,7 @@ Table of contents
 <!--ts-->
 - [Table of contents](#table-of-contents)
 - [Prerequisites for deploy](#prerequisites-for-deploy)
-  - [SCP Subaccount assignment](#scp-subaccount-assignment)
+  - [BTP Subaccount assignment](#btp-subaccount-assignment)
 - [Deployment](#deployment)
   - [WebIDE](#webide)
   - [Cloud Foundry CLI](#cloud-foundry-cli)
@@ -30,35 +30,35 @@ Table of contents
     - [Function **insertEIDs**](#function-inserteids)
     - [Function **insertInfected**](#function-insertinfected)
     - [Function **setApprovalStatus**](#function-setapprovalstatus)
-- [Approval Workflow (SCP Workflow service)](#approval-workflow-scp-workflow-service)
+- [Approval Workflow (BTP Workflow service)](#approval-workflow-btp-workflow-service)
 - [UI Applications](#ui-applications)
 - [License](#license)
 <!--te-->
 
 Prerequisites for deploy
 ========================
-This section shows all the necessary details needed to setup SCP subaccount and deployment system. To deploy the application two options are available:
-1. **SAP Web IDE** - deploy the app directly from SCP editor;
+This section shows all the necessary details needed to setup BTP subaccount and deployment system. To deploy the application two options are available:
+1. **SAP Web IDE** - deploy the app directly from BTP editor;
 2. **Cloud Foundry CLI** - onPrem build & deploy of the MTA application.
 
-## SCP Subaccount assignment
-Below are listed SCP services & entitlements that must be available within SCP Cloud Foundry subaccount in order to support application deployment & execution.
+## BTP Subaccount assignment
+Below are listed BTP services & entitlements that must be available within BTP Cloud Foundry subaccount in order to support application deployment & execution.
 
 Service     | Plan              | Quantity
 ---------   | ---------------   | -----
-**Application Runtime** | MEMORY | 4 GB
+**Cloud Foundry Runtime** | MEMORY | 4 GB
 **HTML5 Applications** | app-host | 10 MB
-**Mobile Services** | standard | Total nr of users using the mobile app
-**Portal** | standard | --
+**SAP Mobile Services** | standard | Total nr of users using the mobile app
+**Launchpad Service** | standard | --
 **SAP HANA Service** or **Cloud** | GBSTANDARD or hana | minimum quantity
 **SAP HANA Schemas & HDI Containers** | hdi-shared | --
-**Workflow Service** | standard | --
+**Workflow Management Service** | standard | --
 
 Prerequisites setup process includes following actions that must be performed to properly setup the Cloud Foundry environment:
 
   1. Setup **Subaccount** + **Cloud Foundry Organization** and **Space**. To do this, have a look at [Getting Started with an Enterprise Account in the Cloud Foundry Environment](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/56440ab2380041e092c29baf2893ef97.html) section of SAP Help portal;
    
-  2. Setup the **Mobile Services** tenant in the newly created SCP Cloud Foundry space. Have a look at [Mobile Services setup page](https://help.sap.com/viewer/468990a67780424a9e66eb096d4345bb/Cloud/en-US/d2a9afc1681c4e57a4a0f2039274d250.html) in SAP Help portal;
+  2. Setup the **Mobile Services** tenant in the newly created BTP Cloud Foundry space. Have a look at [Mobile Services setup page](https://help.sap.com/viewer/468990a67780424a9e66eb096d4345bb/Cloud/en-US/d2a9afc1681c4e57a4a0f2039274d250.html) in SAP Help portal;
 
   3. If the HANA service is not instantiated into the same space where you're about to deploy the application, it is necessary to create an **Instance Sharing** configuration within the SAP HANA Service Dashboard. To do so, follow the [Share a Database with Other Spaces](https://help.sap.com/viewer/cc53ad464a57404b8d453bbadbc81ceb/Cloud/en-US/390b47b7c0314d57a1829a0759a71ace.html) section of SAP Help Portal.
 
@@ -117,7 +117,7 @@ Before proceeding with build & deployment steps it is necessary to perform follo
 1. [Install Cloud Foundry Command-Line Interface (CLI)](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html);
 2. [Install the MultiApps Cloud Foundry CLI Plugin](https://developers.sap.com/tutorials/cp-cf-install-cliplugin-mta.html);
 3. [Install NodeJS version 10.xx](https://nodejs.org/en/download/) and [Cloud MTA Build Tool](https://sap.github.io/cloud-mta-build-tool/download/);
-4. (Optional) Install [CF HTML5 Applications Repository CLI Plugin](https://github.com/SAP/cf-html5-apps-repo-cli-plugin) - it is needed to monitor HTML5 Repository service within SCP CF Subaccount.
+4. (Optional) Install [CF HTML5 Applications Repository CLI Plugin](https://github.com/SAP/cf-html5-apps-repo-cli-plugin) - it is needed to monitor HTML5 Repository service within BTP CF Subaccount.
 
 After cloning the repository, access the root folder of the project and start building the project with command
 
@@ -129,7 +129,7 @@ Once the process is completed, following message should appear in the console:
 
 ![CF CLI MBT Build command success](/documentation/images/05_cf_cli_build.png)
 
-Next step is to login to your SCP CF Organization and Space. To do that, use following command in CLI:
+Next step is to login to your BTP CF Organization and Space. To do that, use following command in CLI:
 
 ```bash
 $ cf login
@@ -152,7 +152,7 @@ After the process has been successfully terminated, console should contain follo
 This URL points to Safety @ Work back-office applications approuter (see next sections).
 
 ## Post-deployment checks
-Log into your SCP Cloud Foundry subaccount and navigate the `Applications` section of the target Space inside your Organization. As a result of a successful deployment, you should be able to see following apps:
+Log into your BTP Cloud Foundry subaccount and navigate the `Applications` section of the target Space inside your Organization. As a result of a successful deployment, you should be able to see following apps:
 
 ![CF Space Applications](/documentation/images/08_space_applications.png)
 
@@ -166,7 +166,7 @@ By clicking the `Application Routes` link, Fiori Launchpad application is shown 
 
 ## Post-deployment configurations
 
-In order to let the **Workflow** works properly, we need to setup following **destinations** within SCP subaccount
+In order to let the **Workflow** works properly, we need to setup following **destinations** within BTP subaccount
 
 ### Email destination configuration
 
@@ -210,7 +210,7 @@ The Workflow requires an additional destination to be able to communicate with S
 
 First of all it is necessary to access the **cv19-tracing-xsjs** service overview page, and from there the "Service Binding" section.
 
-![SCP XSJS Service binding section located at](/documentation/images/xsjs_destination_auth_0.png)
+![BTP XSJS Service binding section located at](/documentation/images/xsjs_destination_auth_0.png)
 
 From the next page take note of following information from the **sensitive data section** of the **uaa_covid19-contact-tracing-be** bound service:
 
@@ -224,7 +224,7 @@ From the next page take note of following information from the **sensitive data 
 
 Switch back to destination configuration within subaccount cockpit and create a new destination using these informations, in order to properly address *cv19-tracing-xsjs* service.
 
-![SCP Destination configuration](/documentation/images/xsjs_destination_auth_2.png)
+![BTP Destination configuration](/documentation/images/xsjs_destination_auth_2.png)
 
 **NB:** in the Token Service URL you must type the value of "url" field with */oauth/token* appended at the end. Final URL should look like as follow:
 
@@ -743,7 +743,7 @@ The structure of the generic HTTP end point is as follow:<br><br>
 }
 ```
   
-Approval Workflow (SCP Workflow service)
+Approval Workflow (BTP Workflow service)
 ========================================
 
 The workflow structure is depicted in following picture:
